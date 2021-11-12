@@ -4,18 +4,19 @@ import { Router } from "@reach/router";
 import Register from "./views/Register";
 import Logout from "./registration/Logout"
 import Login from "./registration/Login";
+import Messenger from "./Messenger/Messenger"
 
 
 function App() {
   return (
-    <div>
+    
       <Router>
-        <Login exact path="/user/login/"/>
-        <Logout exact path="/user/logout/"/>
-        <Register exact path="/user/register"></Register>
+        <Login path="/user/login/"/>
+        <Logout path="/user/logout/"/>
+        <Register path="/user/register"></Register>
+        <Messenger path="/user/inbox"></Messenger>
       </Router>
-      {/* <ComboBox></ComboBox> */}
-    </div>
+   
   );
 }
 
