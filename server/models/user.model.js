@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const Schema = mongoose.Schema;
 const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
@@ -8,6 +9,10 @@ const UserSchema = new mongoose.Schema({
   lastName: {
     type: String,
     required: [true, "Last name is required"]
+  },
+  Following: {
+    type: Schema.Types.ObjectId,
+    ref: 'UserManager'
   },
   email: {
     type: String,

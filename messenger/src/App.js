@@ -14,7 +14,8 @@ function App() {
         <Login path="/user/login/"/>
         <Logout path="/user/logout/"/>
         <Register path="/user/register"></Register>
-        <Messenger path="/user/inbox"></Messenger>
+    {/*     <Messenger path="/user/inbox"></Messenger> */}
+        <Messenger path="/user/inbox/:id"></Messenger>
       </Router>
    
   );

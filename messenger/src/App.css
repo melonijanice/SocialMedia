@@ -27,6 +27,19 @@
 .App-link {
   color: #61dafb;
 }
+.rightAlign
+{
+  text-align: right;
+}
+.leftAlign
+{
+  text-align: left;
+}
+.timeStamp
+{
+  font-size: 0.2em;
+  text-align: center;
+}
 
 @keyframes App-logo-spin {
   from {
