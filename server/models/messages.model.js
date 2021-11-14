@@ -7,19 +7,26 @@ const MessageSchema = new mongoose.Schema({
     type: String,
     required: [true, "Message is required"]
   },
-  toWhom:[
+  toWhom:
     {
       type: Schema.Types.ObjectId,
       ref: UserManager,
     }
-  ],
-  FromUser:[
+  ,
+  FromUser:
     {
       type: Schema.Types.ObjectId,
       ref: UserManager,
+    },
+    Read:
+    {
+      type: String,
+      default:"False"
+
     }
-  ],
+  
 }, {timestamps: true});
+
 
 
 module.exports = mongoose.model('MessageManager', MessageSchema);

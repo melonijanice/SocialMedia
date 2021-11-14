@@ -20,85 +20,106 @@ export default function Messenger(props) {
   const [messages, setMessages] = useState([]);
   const [newmessageFrom, setnewmessageFrom] = useState([]);
 
+  //for contacted users
+  const [allmessages, setallmessages] = useState([]);
+
+ 
   var moment = require("moment");
   useEffect(() => {
     const LoggedInUser = JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
-
+    const followersCopy=[]
     let fromId;
     axios
-      .get(`http://localhost:8000/api/messages/${LoggedInUser.user_id}`, {
+        .get(
+          `http://localhost:8000/api/messages/${LoggedInUser.user_id}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          console.log("All messages for users who have been contacted", res.data);
+          console.log(res.data);
+          //setMessages(res.data); // [1, 2, 3]
+        })
+        .catch((err) => {
+          navigate(`/user/inbox`);
+        });
+
+    const getData = async () => {  
+      await axios
+      .get("http://localhost:8000/api/users", {
         withCredentials: true,
       })
       .then((res) => {
-        console.log("All messages for users who have been contacted", res.data);
         console.log(res.data);
-        //setMessages(res.data); // [1, 2, 3]
+       //Filter other than Varsha for testing- assuming she isnt follower
+       //const filteredNonFollowers=res.data.filter(item=>item._id!=="618dad1d14738bb3d7fd6c9d")
+       //setFollowers(filteredNonFollowers)
+        setFollowers(res.data);
+        
+
+      
+        if(props.id==="All"){
+          setClickedTd(res.data[0]._id);
+          fromId= res.data[0]._id;  
+          console.log("To whom",props.id)
+        }
+        else
+        {
+          setClickedTd(props.id);
+          fromId= props.id; 
+          
+        }
+        
+        axios
+        .get(
+          `http://localhost:8000/api/messages/${fromId}/${LoggedInUser.user_id}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          console.log("All messages", res.data);
+          console.log(res.data);
+          setMessages(res.data); // [1, 2, 3]
+     
+        })
+        .catch((err) => {
+          navigate(`/user/inbox`);
+        });
+          
+      })
+      .catch((err) => {
+        navigate(`/admin/home`);
+      });
+
+      
+    }
+    getData()
+
+     
+//getting all contacted users
+      axios
+      .get(
+        `http://localhost:8000/api/messagesContacted`,
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log("All messages for the user", res.data);
+        const getContacted=res.data.filter(item=>item._id===LoggedInUser.user_id)
+        setallmessages(getContacted)
+        console.log("all filtered contacted users",getContacted)
       })
       .catch((err) => {
         navigate(`/user/inbox`);
       });
-
-    const getData = async () => {
-      await axios
-        .get("http://localhost:8000/api/users", {
-          withCredentials: true,
-        })
-        .then((res) => {
-          console.log(res.data);
-          //Filter other than Varsha for testing- assuming she isnt follower
-          const filteredNonFollowers = res.data.filter(
-            (item) => item._id !== "618dad1d14738bb3d7fd6c9d"
-          );
-          
-          //setFollowers(res.data);
-
-          if (props.id === "All") {
-            setClickedTd(res.data[0]._id);
-            fromId = res.data[0]._id;
-            console.log("To whom", props.id);
-            setFollowers(filteredNonFollowers);
-          } else {
-            axios
-              .get(`http://localhost:8000/api/users/${props.id}`, {
-                withCredentials: true,
-              })
-              .then((res) => {
-                
-                console.log("The user that doesnt exist", res.data);
-                setFollowers([...filteredNonFollowers,res.data]);
-               
-              })
-              .catch((err) => {
-                navigate(`/user/inbox`);
-              });
-            setClickedTd(props.id);
-            fromId = props.id;
-          }
-
-          axios
-            .get(
-              `http://localhost:8000/api/messages/${fromId}/${LoggedInUser.user_id}`,
-              {
-                withCredentials: true,
-              }
-            )
-            .then((res) => {
-              console.log("All messages", res.data);
-              console.log(res.data);
-              setMessages(res.data); // [1, 2, 3]
-            })
-            .catch((err) => {
-              navigate(`/user/inbox`);
-            });
-        })
-        .catch((err) => {
-          navigate(`/admin/home`);
-        });
-    };
-    getData();
-
-    socket.on("message_" + LoggedInUser.user_id, (data) => {
+     
+      
+      
+    socket.on("message_"+LoggedInUser.user_id, (data) => {
       console.log("New Message");
       console.log(data.toWhom, LoggedInUser.user_id);
       setClickedTd((currentClickedId) => {
@@ -108,13 +129,15 @@ export default function Messenger(props) {
         setClickedTd(currentClickedId);
       });
 
-      setnewmessageFrom((currentFromMessages) => [
-        ...currentFromMessages,
-        data.FromUser,
-      ]);
+        setnewmessageFrom((currentFromMessages) => [
+          ...currentFromMessages,
+          data.FromUser,
+        ]);
+
     });
     return () => socket.disconnect(true);
   }, []);
+
 
   const getUserMessages = (e, toWhom) => {
     e.preventDefault();
@@ -135,14 +158,16 @@ export default function Messenger(props) {
       .then((res) => {
         console.log("All messages", res.data.length);
         setMessages(res.data); // [1, 2, 3]
+
       })
       .catch((err) => {
         navigate(`/user/inbox`);
       });
-    axios
+      axios
       .put(`http://localhost:8000/api/messages/${toWhom}/${user.user_id}`)
       .then((res) => {
         console.log("updated messages", res.data);
+
       })
       .catch((err) => {
         navigate(`/user/inbox`);
@@ -174,6 +199,7 @@ export default function Messenger(props) {
         console.log(err.response);
         //setErrors(err.response.data.errors);
       });
+      
   };
   return (
     <Box sx={{ display: "flex", m: 5 }}>
@@ -224,11 +250,12 @@ export default function Messenger(props) {
 
       <Box>
         <Paper
+         
           key={"dummy"}
           sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
+            display:"flex",
+            flexDirection:"column",
+            justifyContent:"space-between",
             overflow: "auto",
             maxHeight: "500px",
             minHeight: "600px",
@@ -237,26 +264,26 @@ export default function Messenger(props) {
           }}
         >
           <Box>
-            {messages &&
-              messages.map((message) => (
-                <>
-                  <p className="timeStamp">
-                    {moment(message.updatedAt).format("MM/DD/YYYY,h:mma")}
-                  </p>
-                  <p
-                    className={
-                      message.FromUser._id === user.user_id ||
-                      message.FromUser === user.user_id
-                        ? "rightAlign"
-                        : "leftAlign"
-                    }
-                  >
-                    <p> {message.MessageBody}</p>
-                  </p>
-                </>
-              ))}
+          {messages &&
+            messages.map((message) => (
+              <>
+                <p className="timeStamp">
+                  {moment(message.updatedAt).format("MM/DD/YYYY,h:mma")}
+                </p>
+                <p
+                  className={
+                    message.FromUser._id === user.user_id ||
+                    message.FromUser === user.user_id
+                      ? "rightAlign"
+                      : "leftAlign"
+                  }
+                >
+                  <p> {message.MessageBody}</p>
+                </p>
+              </>
+            ))}
           </Box>
-          <Box sx={{ display: "flex" }}>
+          <Box sx={{ display: "flex"}}>
             <TextField
               autoFocus
               fullWidth

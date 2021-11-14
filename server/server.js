@@ -163,14 +163,11 @@ io.on("connection", (socket) => {
   console.log("socket id for handshake: " + socket.id);
   // We add our additional event listeners right inside this function
   // NOTE: "connection" is a BUILT IN events listener
-  socket.on("added_pet", (data) => {
-    console.log("added new pet:data is here:", data);
-    console.log("socket id for Broadcast creation: " + socket.id);
-    socket.broadcast.emit("pet_added", data);
-  });
-  socket.on("deleted_pet", (data) => {
-    console.log("deleted new pet:data is here:", data);
-    console.log("socket id for Broadcast deletion: " + socket.id);
-    socket.broadcast.emit("pet_deleted", data);
+
+  //message recieved from socket
+  socket.on("sending_message", (data) => {
+    console.log("new message:data is here:", data);
+    console.log("socket id for Broadcast messages: " + socket.id);
+    socket.broadcast.emit("message_"+data.toWhom, data);
   });
 });
