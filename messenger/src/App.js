@@ -5,6 +5,7 @@ import Register from "./views/Register";
 import Logout from "./registration/Logout"
 import Login from "./registration/Login";
 import Messenger from "./Messenger/Messenger"
+import Home from "./views/home";
 
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Register path="/user/register"></Register>
     {/*     <Messenger path="/user/inbox"></Messenger> */}
         <Messenger path="/user/inbox/:id"></Messenger>
+        <Home path="/user/home"></Home>
       </Router>
    
   );

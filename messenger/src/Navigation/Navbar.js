@@ -155,10 +155,10 @@ function Navbar() {
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
                 <li>
-                    <Link className={classes.link_menu} to={`/admin/${User.user_id}/viewUser`}>My Profile</Link>
+                    <Link className={classes.link_menu} to={`/user/${User.user_id}/viewUser`}>My Profile</Link>
                   </li>
                   <li>
-                    <Link className={classes.link_menu} to={`/admin/${User.user_id}/Edit`}>Edit Profile</Link>
+                    <Link className={classes.link_menu} to={`/user/${User.user_id}/Edit`}>Edit Profile</Link>
                   </li>
                   <li>
                     <Logout></Logout>

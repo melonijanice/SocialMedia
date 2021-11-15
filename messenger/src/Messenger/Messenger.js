@@ -10,8 +10,12 @@ import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import { navigate } from "@reach/router";
 import io from "socket.io-client";
+import Navbar from "../Navigation/Navbar";
+import Login from "../registration/Login";
 
 export default function Messenger(props) {
+const cookie = document.cookie.match(/^(.*;)?\s*usertoken\s*=\s*[^;]+(.*)?$/);
+console.log(localStorage.getItem("userData"));
   const [socket] = useState(() => io(":8000"));
   const [currentmsg, setCurrentmsg] = useState("");
   const [user, setLoggedInUser] = useState({});
@@ -176,6 +180,13 @@ export default function Messenger(props) {
       });
   };
   return (
+      <>
+    <div>
+    {cookie &&<Navbar />}
+
+    {!cookie && <Login></Login>}
+  </div>
+  {cookie && (
     <Box sx={{ display: "flex", m: 5 }}>
       <Box>
         {followers.map((follower) => (
@@ -271,6 +282,7 @@ export default function Messenger(props) {
           </Box>
         </Paper>
       </Box>
-    </Box>
+    </Box>)}
+    </>
   );
 }
