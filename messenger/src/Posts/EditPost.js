@@ -4,21 +4,31 @@ import { navigate } from "@reach/router";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import PostDisplay from "../Posts/PostDisplay";
 import ImageIcon from '@mui/icons-material/Image';
 import IconButton from "@mui/material/IconButton";
 
+const PostEdit = (props) => {
+  const [postBody, setPostBody] = useState(props.postData);
+  const [post, setPost] = useState("")
 
-const PostCreate = (e) => {
-  const [postBody, setPostBody] = useState("");
+
   const [errors, setErrors] = useState({});
   const [user, setLoggedInUser] = useState({});
-  const [newPost, setnewPost] = useState("");
-
   useEffect(() => {
     const LoggedInUser = JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
   }, []);
+  useEffect(() => {
+    axios.get(`http://localhost:8000/api/posts/${props.id}`,{
+        withCredentials: true,
+      })
+    .then( res =>{
+        console.log("res data",res.data)
+        //setPost(res.data)
+
+    })
+    .catch( error => console.log(error))
+}, [props.id])
 
   const submitHandler = (e) => {
     console.log("clicked")
@@ -29,12 +39,12 @@ const PostCreate = (e) => {
     };
     console.log(newPost);
     axios
-      .post("http://localhost:8000/api/posts", newPost, {
+      .put("http://localhost:8000/api/posts/"+props.id, newPost, {
         withCredentials: true,
       })
       .then((res) => {
         console.log(res);
-        setnewPost(res.data)
+        props.onSubmitProp(res.data)
         //navigate("/displayPost");
       })
       .catch((err) => {
@@ -54,15 +64,15 @@ const PostCreate = (e) => {
           <TextField
           sx={{ minWidth:{xs: "100px", md: "500px" }}}
           id="title"
-          label="Share your thoughts"
           variant="outlined"
+          defaultValue={postBody}
           value={postBody}
           onChange={(e) => {
             setPostBody(e.target.value);
           }}
         />
          <Button variant="contained" color="primary" onClick={submitHandler}>
-                      Post
+                      Update
                     </Button>
                     {errors && errors.postBody && (
             <p className="error-text">{errors.postBody.message}</p>
@@ -77,9 +87,8 @@ const PostCreate = (e) => {
               </IconButton>
         </Box>
        
-        <PostDisplay newPost={newPost}/>
-        
+       
     </div>
   );
 };
-export default PostCreate;
+export default PostEdit;
