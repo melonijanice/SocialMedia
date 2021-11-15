@@ -94,7 +94,7 @@ export default function Login(props) {
         //send this message to server directly
         console.log(res);
         localStorage.user = JSON.stringify(res.data.userLoggedIn);
-        navigate(`/user/inbox/All`);
+        navigate(`/user/home`);
       })
       .catch((err) => {
         console.log(err.response);
