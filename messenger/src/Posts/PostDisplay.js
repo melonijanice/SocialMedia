@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Paper from "@mui/material/Paper";
+import IconButton from "@mui/material/IconButton";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+
 // import { Link, navigate } from "@reach/router";
 // import ReactImageMagnify from "react-image-magnify";
 /* import CommentCreate from "./CommentCreate";
@@ -27,23 +31,46 @@ const PostDisplay = (props) => {
 
   return (
     <>
-
-            {posts.map((element, index) => (
-              <Paper
-        elevation={7}
-        sx={{
-          bgcolor: "background.paper",
-          p: 4,
-          minWidth: 300,
-          m: 2,
-          display:"flex"
-        }}
-      >
-                <div class="card-body">
-                <p><span style={{fontWeight:"bold"}}>{element.postedBy.firstName + " " +element.postedBy.lastName}</span> <span style={{color:"grey"}}>posted on their canvas</span></p>
-                  <p class="card-text">{element.postBody}</p>
-                  <p>{element.postedBy.firstName}</p>
-               {/*    <CommentCreate
+      {posts.map((element, index) => (
+        <Paper
+          elevation={7}
+          sx={{
+            bgcolor: "background.paper",
+            p: 4,
+            minWidth: 300,
+            m: 2,
+            display: "flex",
+          }}
+        >
+          <div class="card-body">
+            <div style={{textAlign:"right"}}>
+            <IconButton
+                id={element._id}
+                name="Edit"
+                
+                aria-label="edit"
+                size="small"
+              >
+                <EditIcon id={element._id} name="Edit" fontSize="inherit" />
+              </IconButton>
+          <IconButton
+                id={element._id}
+                name="Delete"
+                aria-label="delete"
+                size="small"
+              >
+                <DeleteIcon fontSize="inherit" />
+              </IconButton>
+              </div>
+            <p>
+              <span style={{ fontWeight: "bold" }}>
+                {element.postedBy.firstName + " " + element.postedBy.lastName}
+              </span>{" "}
+              <span style={{ color: "grey" }}>posted on their canvas</span>
+            </p>
+            <p class="card-text">{element.postBody}</p>
+         
+            {/*    <CommentCreate
                     postId={element._id}
                     onSubmitProp={setNewCommentHandler}
                   ></CommentCreate>
@@ -52,10 +79,10 @@ const PostDisplay = (props) => {
                     postId={element._id}
                   ></CommentDisplay> */}
 
-                  {/* <input type="text"></input> */}
-                </div>
-              </Paper>
-            ))}
+            {/* <input type="text"></input> */}
+          </div>
+        </Paper>
+      ))}
     </>
   );
 };

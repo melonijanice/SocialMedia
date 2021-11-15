@@ -30,7 +30,7 @@ export default function Home() {
         setUsers(res.data);
       })
       .catch((err) => {
-        navigate(`/admin/home`);
+        navigate(`/user/home`);
       });
   }, []);
   return (
