@@ -137,7 +137,6 @@ require("./routes/user.routes")(app);
 require("./routes/message.routes")(app); 
 
 require("./routes/products.routes")(app);
-=======
 require("./routes/post.routes")(app);
 
 

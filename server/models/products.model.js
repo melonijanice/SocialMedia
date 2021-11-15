@@ -33,22 +33,12 @@ const productSchema = new mongoose.Schema({
     },
     content:{
         type:String,
-        required: [true, "Content is required"],
+        // required: [true, "Content is required"],
     },
 
     images:[Object],
-    category:{
-        type:String,
-        required: [true, "Category is required"],
-    },
-    checked:{
-        type:Boolean,
-        default:false,
-    },
-    sold:{
-        type:Number,
-        default:0
-    },
+
+
     like:{
         type:Number,
         default: 0
