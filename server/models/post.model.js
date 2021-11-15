@@ -7,6 +7,7 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "Message is required"],
     },
+    Image: { type: String },
     postedBy: {
       type: Schema.Types.ObjectId,
       ref: UserManager,

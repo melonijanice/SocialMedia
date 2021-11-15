@@ -5,6 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PostEdit from "./EditPost";
+import CardMedia from "@mui/material/CardMedia";
 
 // import { Link, navigate } from "@reach/router";
 // import ReactImageMagnify from "react-image-magnify";
@@ -57,13 +58,22 @@ const PostDisplay = (props) => {
   }
   const onEditDataHandler=(updatedPost)=>
   {
-    setElementMode("")
+    if(updatedPost==="cancel")
+    {
+      setElementMode("")
+    
+    }
+    else
+    {
+      setElementMode("")
     console.log("new data",updatedPost)
     let filteredPosts=posts.filter(post=>post._id!==updatedPost._id)
     console.log(filteredPosts)
     filteredPosts=[updatedPost,...filteredPosts]
     console.log(filteredPosts)
     setPosts(filteredPosts)
+    }
+    
 
   }
   
@@ -112,6 +122,11 @@ const PostDisplay = (props) => {
               <span style={{ color: "grey" }}>posted on their canvas</span>
             </p>
             <p class="card-text">{element.postBody}</p>
+            {element.Image &&<CardMedia sx={{maxWidth:"400px"}}
+              component="img"
+              image={`http://localhost:8000/Images/${element.Image}`}
+             
+            />}
          </div> 
          {elementMode===element._id && <PostEdit id={element._id} postData={element.postBody} onSubmitProp={onEditDataHandler}/>}
             {/*    <CommentCreate
