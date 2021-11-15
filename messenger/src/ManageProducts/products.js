@@ -1,7 +1,8 @@
 import React from 'react'
 import {useState, useEffect, useContext} from 'react'
 import Box from '@mui/material/Box';
-
+import Navbar from "../Navigation/Navbar";
+import Login from "../registration/Login";
 
 
 import axios from 'axios'
@@ -14,6 +15,7 @@ export default function ProductsComponent() {
     const [productsRenderFlag, setProductsRenderFlag] = useState(false)
     const LoggedInUser = localStorage.user && JSON.parse(localStorage.user);
     const userId = localStorage.user && JSON.parse(localStorage.user).user_id;
+   
 
     
 
@@ -34,8 +36,11 @@ export default function ProductsComponent() {
     // const {setFilteredProducts ,products} = useContext(UserContext)
     // const [displayProducts, setDisplayProducts]= useState([])
 
-    return (
-        
+    return (<>
+        <div>
+       <Navbar />
+
+      </div>
         <div className="container ">
                 <Box display="flex" justifyContent='space-around'>
                 {
@@ -60,6 +65,7 @@ export default function ProductsComponent() {
 
             
         </div>
+        </>
     )
 }
 

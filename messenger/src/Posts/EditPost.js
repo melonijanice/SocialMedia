@@ -4,8 +4,13 @@ import { navigate } from "@reach/router";
 import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import ImageIcon from '@mui/icons-material/Image';
 import IconButton from "@mui/material/IconButton";
+import PhotoCamera from '@mui/icons-material/PhotoCamera';
+import { styled } from '@mui/material/styles';
+
+const Input = styled('input')({
+    display: 'none',
+  });
 
 const PostEdit = (props) => {
   const [postBody, setPostBody] = useState(props.postData);
@@ -52,6 +57,12 @@ const PostEdit = (props) => {
         setErrors(err.response.data.errors);
       });
   };
+  const cancelHandler = (e) => {
+    console.log("clicked")
+    e.preventDefault();
+    props.onSubmitProp("cancel")
+    
+  };
 
   return (
     <div className="container">
@@ -64,6 +75,7 @@ const PostEdit = (props) => {
           <TextField
           sx={{ minWidth:{xs: "100px", md: "500px" }}}
           id="title"
+          label="Editing post"
           variant="outlined"
           defaultValue={postBody}
           value={postBody}
@@ -74,17 +86,14 @@ const PostEdit = (props) => {
          <Button variant="contained" color="primary" onClick={submitHandler}>
                       Update
                     </Button>
+                    <Button variant="contained" color="primary" onClick={cancelHandler}>
+                      Cancel
+                    </Button>
                     {errors && errors.postBody && (
             <p className="error-text">{errors.postBody.message}</p>
           )}
                     </>
-                    <IconButton
-                name="Delete"
-                aria-label="delete"
-                size="large"
-              >
-                <ImageIcon fontSize="inherit" />
-              </IconButton>
+       
         </Box>
        
        

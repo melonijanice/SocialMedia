@@ -86,7 +86,7 @@ export default function Home() {
                     {user.firstName + " " + user.lastName}
                   </Typography>
                   <Typography>
-                    <Button variant="contained" color="success">
+                    <Button variant="contained" size="small" color="success">
                       Follow
                     </Button>
                   </Typography>
