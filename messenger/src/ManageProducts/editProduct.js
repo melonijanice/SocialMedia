@@ -17,6 +17,7 @@ export default function EditProduct(props) {
     const [images, setImages] = useState([])
     const [owner, setOwner] = useState("")
     const [errors, setErrors] = useState({})
+    const [loaded, setLoaded] = useState(false);
     
 
     useEffect(() => {
@@ -24,7 +25,7 @@ export default function EditProduct(props) {
         .then( res =>{
             console.log("res data",res.data)
             setProduct(res.data)
-
+            setLoaded(true)
         })
         .catch( error => console.log(error))
     }, [props.id])
@@ -68,7 +69,7 @@ export default function EditProduct(props) {
         <div>
             <h2>Edit Product</h2>
 
-            <Box
+            {loaded && (<Box
                 component="form"
                 onSubmit={submitHandler}
                 sx={{
@@ -104,7 +105,7 @@ export default function EditProduct(props) {
                     required
                     id="outlined-required"
                     label="Title"
-                    defaultValue=""
+                    defaultValue={product.title}
                     onChange={(e)=>{setTitle(e.target.value)}}
                 />
 
@@ -112,7 +113,7 @@ export default function EditProduct(props) {
                     required
                     id="outlined-required"
                     label="Price"
-                    defaultValue=""
+                    defaultValue={product.price}
                     onChange={(e)=>{setPrice(e.target.value)}}
                 />
 
@@ -123,14 +124,14 @@ export default function EditProduct(props) {
                     label="Description"
                     multiline
                     rows={4}
-                    defaultValue=""
+                    defaultValue={product.description}
                     onChange={(e)=>{setDescription(e.target.value)}}
                 />
 
                 <TextField
                     label="images"
                     id="outlined-required"
-                    defaultValue=""
+                    defaultValue={product.images}
                     onChange={(e)=>{setImages(e.target.value)}}
                 />
 
@@ -141,7 +142,7 @@ export default function EditProduct(props) {
 
             {/* </form> */}
 
-            </Box>
+            </Box>)}
 
 
             

@@ -19,8 +19,13 @@ export default function ProductsComponent() {
 
 
     useEffect( ()=>{
+        
         axios.get("http://localhost:8000/api/product") //,{} ,{withCredentials: true}
-        .then(res=> setProducts(res.data))
+        .then(res=> 
+            {
+                console.log(res.data)
+                setProducts(res.data)
+            })
         .catch( err=>{
             console.log(err.message)
         })
