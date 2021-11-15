@@ -10,12 +10,7 @@ export default function Logout(props) {
             //send this message to server directly
             console.log("sending data", res);
             localStorage.clear();
-            if(props.isLibraryHome==="true")
-            {
-              navigate(`/library/home`)
-            }
-            else
-            {navigate(`/admin/home`)}
+            navigate(`/user/login`)
             
           })
           .catch((err) => {

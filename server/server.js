@@ -134,8 +134,12 @@ app.use(express.static('public'));
 app.use('/Images', express.static('Images')); 
 //routes
 require("./routes/user.routes")(app);
-require("./routes/message.routes")(app);
+require("./routes/message.routes")(app); 
+
 require("./routes/products.routes")(app);
+=======
+require("./routes/post.routes")(app);
+
 
 
 //listen on port
