@@ -8,6 +8,7 @@ import Register from "./Register";
 import Logout from "../registration/Logout"
 import Login from "../registration/Login";
 import Messenger from "../Messenger/Messenger"
+import Home from "./home"
 
 
 export default function Marketplace() {
@@ -50,7 +51,7 @@ export default function Marketplace() {
                 {/*     <Messenger path="/user/inbox"></Messenger> */}
                     <Messenger path="/user/inbox/:id"></Messenger>
                     <ProductsComponent path="/user/marketplace"></ProductsComponent>
-
+                    <Home path="/user/home"/>
 
                 </Router>
 
