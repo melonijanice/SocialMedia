@@ -42,7 +42,26 @@ module.exports = {
             confirmPassword
           })
             .then((user) => {
-              res.json({ msg: "success!", user: user });
+              const userToken = jwt.sign(
+                {
+                  user_id: user._id,
+                  email: user.email
+                },
+                process.env.JWT_SECRET
+              );
+              res
+                .cookie("usertoken", userToken, process.env.JWT_SECRET, {
+                  httpOnly: true,
+                  expires: new Date(Date.now() + 900000),
+                })
+                .json({
+                  msg: "successfully Logged In!",
+                  userLoggedIn: {
+                    name: user.firstName + " " + user.lastName,
+                    user_id: user._id,
+                    email: user.email
+                  },
+                });
             })
             .catch((err) => {
               res.status(400).json(err);
