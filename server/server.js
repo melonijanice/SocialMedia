@@ -135,10 +135,11 @@ app.use('/Images', express.static('Images'));
 //routes
 require("./routes/user.routes")(app);
 require("./routes/message.routes")(app);
+require("./routes/products.routes")(app);
 
 
 //listen on port
-const port = process.env.MY_PORT;
+const port = process.env.MY_PORT || 8000;
 //console.log(port)
 //const port = 8000;
 const server = app.listen(port, () => {
