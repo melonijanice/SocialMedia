@@ -5,6 +5,8 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import PostDisplay from "../Posts/PostDisplay";
+import ImageIcon from '@mui/icons-material/Image';
+import IconButton from "@mui/material/IconButton";
 
 const PostCreate = (e) => {
   const [postBody, setPostBody] = useState("");
@@ -43,8 +45,6 @@ const PostCreate = (e) => {
       <Box
           sx={{
             bgcolor: "background.paper",
-            m: 4,
-            p: 5,
           }}
         >
     <>
@@ -65,7 +65,15 @@ const PostCreate = (e) => {
             <p className="error-text">{errors.postBody.message}</p>
           )}
                     </>
+                    <IconButton
+                name="Delete"
+                aria-label="delete"
+                size="large"
+              >
+                <ImageIcon fontSize="inherit" />
+              </IconButton>
         </Box>
+       
         <PostDisplay/>
     </div>
   );
