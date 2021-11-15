@@ -8,7 +8,12 @@ import Register from "./Register";
 import Logout from "../registration/Logout"
 import Login from "../registration/Login";
 import Messenger from "../Messenger/Messenger"
+
 import Home from "./home"
+
+
+import CreateProduct from '../ManageProducts/createProduct'
+import EditProduct from '../ManageProducts/editProduct'
 
 
 export default function Marketplace() {
@@ -16,7 +21,7 @@ export default function Marketplace() {
 
 
     const [isLoggedin, setLoggedin] = useState(false)
-    const [userId, setUserId] = useState('')
+    // const [userId, setUserId] = useState('')
     const [flag, setFlag] = useState(false)
     const [categories, setCategories]= useState([])
     const [categoryFlag, setCategoryFlag]= useState(false)
@@ -24,14 +29,11 @@ export default function Marketplace() {
     const [productsRenderFlag, setProductsRenderFlag]= useState(false)
 
 
-    useEffect( ()=>{
-        axios.get("http://localhost:8000/api/product")
-        .then(res=> setProducts(res.data))
-        .catch( err=>{
-            console.log(err.message)
-        })
 
-    },[productsRenderFlag])
+
+  
+
+    const LoggedInUser = localStorage.user && JSON.parse(localStorage.user);
 
 
 
@@ -39,19 +41,23 @@ export default function Marketplace() {
         <div>
 
             <UserContext.Provider value={{
-                products,
-                productsRenderFlag, 
-                setProducts,
-                setProductsRenderFlag
+                // products,
+                // productsRenderFlag,
+                // setProducts,
+                // setProductsRenderFlag
             }}>
                 <Router>
                     <Login path="/user/login/"/>
                     <Logout path="/user/logout/"/>
                     <Register path="/user/register"></Register>
-                {/*     <Messenger path="/user/inbox"></Messenger> */}
                     <Messenger path="/user/inbox/:id"></Messenger>
                     <ProductsComponent path="/user/marketplace"></ProductsComponent>
+
                     <Home path="/user/home"/>
+
+                    <CreateProduct path="/user/marketplace/createProduct"> </CreateProduct>
+                    <EditProduct path="/user/marketplace/editProduct/:id"> </EditProduct>
+
 
                 </Router>
 

@@ -35,7 +35,7 @@ const productController = {
 
 
     createProduct: async (req, res)=>{
-        const {owner_id, product_id, title, price, description, content, images, category, checked, sold} = req.body;
+        const {owner_id, product_id, title, price, description, content, images, like} = req.body;
 
         console.log("createProduct",req.body)
 
@@ -55,9 +55,8 @@ const productController = {
                     description: description,
                     content: content,
                     images:images,
-                    category:category,
-                    checked:checked,
-                    sold:sold
+                    like:like
+
                 }
             )
 
@@ -66,6 +65,7 @@ const productController = {
 
             
         } catch (error) {
+            console.log(error)
             return res.status(400).json(error)
         }
     },
@@ -80,7 +80,11 @@ const productController = {
         }
     },
     updateProduct: async (req, res)=>{
-        const {product_id, title, price, description, content, images, category, checked, sold} = req.body;
+
+        console.log(req.body)
+
+
+        const { owner_id, product_id, title, price, description, content, images, like} = req.body;
 
         try {
 
@@ -89,16 +93,14 @@ const productController = {
             }
 
             await Product.findByIdAndUpdate(req.params.id, {
-
+                owner_id:owner_id,
                 product_id:product_id,
                 title : title.toLowerCase(),
                 price :price,
                 description: description,
                 content: content,
                 images:images,
-                category:category,
-                checked:checked,
-                sold:sold
+                like:like
 
             })
             res.json({ message: "A product was updated"})
