@@ -29,7 +29,10 @@ import Box from '@mui/material/Box';
 
 import ChatIcon from '@mui/icons-material/Chat';
 import PaymentIcon from '@mui/icons-material/Payment';
+import moment from 'moment'
 // import StripePayment from '../payment/StripePayment'
+
+
 
 
 
@@ -40,13 +43,14 @@ import PaymentIcon from '@mui/icons-material/Payment';
 export default function Product(props) {
 
 
-    const {isLoggedin, isAdmin , userId ,productsRenderFlag, setProductsRenderFlag} = useContext(UserContext)
-    const {addCart} = useContext(UserContext)
-    const {product} = props
+    // const {userId ,productsRenderFlag, setProductsRenderFlag} = useContext(UserContext)
+
+    const {product ,productsRenderFlag, setProductsRenderFlag ,userId, LoggedInUser} = props
+    
 
 
     // const [updateProduct, setUpdateProduct] = useState({})
-    let loggedInUser = product.owner //+'1'
+    // let loggedInUser = product.owner //+'1'
 
 
 
@@ -61,6 +65,8 @@ export default function Product(props) {
             console.log(" check if refresh is needed")
         })
         .catch( error => console.log(error))
+
+
     }
 
 
@@ -92,13 +98,12 @@ export default function Product(props) {
 
 
 
-
     return (
         <Card sx={{ maxWidth:345}}>
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                    MY{/* This should be the first name od the owner/poster  */}
+                    {LoggedInUser.name[0]}
                 </Avatar>
                 }
                 action={
@@ -108,7 +113,9 @@ export default function Product(props) {
                 }
                 
                 title={product.title}
-                subheader={product.createdAt}
+                // subheader={product.createdAt}
+                subheader={moment(product.createdAt).format('MMMM Do YYYY, h:mm:ss a')}
+
             />
 
             <CardMedia
@@ -134,7 +141,7 @@ export default function Product(props) {
 
             { product.owner_id === userId  ?
                 <Box>  
-                <IconButton onClick={ (e)=> navigate(`/edit/${product._id}`)}> <EditIcon /></IconButton>
+                <IconButton onClick={ (e)=> navigate(`/user/marketplace/editProduct/${product._id}`)}> <EditIcon /></IconButton>
                 <IconButton onClick={deleteHandler}> <DeleteIcon /></IconButton>
                 </Box>:
                 <Box>  
@@ -144,7 +151,7 @@ export default function Product(props) {
                 </IconButton>
     
                 <IconButton >
-                    <ChatIcon />
+                    <ChatIcon  onClick={(e)=>{navigate(`/user/inbox/${product.owner_id}`)}}/>
                 </IconButton>
                 </Box>
             }
