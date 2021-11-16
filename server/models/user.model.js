@@ -10,10 +10,36 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: [true, "Last name is required"]
   },
-  Following: {
+  password: {
+    type: String,
+    required: [true, "Password is required"],
+    minlength: [8, "Password must be at least 8 characters long."],
+  },
+  avatar: {
+    type: String,
+    default: "",
+  },
+  bio: {
+    type: String,
+    default: "",
+    maxlength: 150,
+  },
+  followers: [{
     type: Schema.Types.ObjectId,
     ref: 'UserManager'
-  },
+  }],
+  following: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'UserManager'
+    },
+  ],
+  saved: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'UserManager'
+    },
+  ],
   email: {
     type: String,
     required: [true, "Email is required"],
