@@ -6,4 +6,5 @@ module.exports = function (app) {
   app.delete("/api/posts/:id", authenticate, PostController.delete);
   app.get("/api/posts/:id",authenticate, PostController.getPost )
   app.put("/api/posts/:id",authenticate,  PostController.updatePost )
+  app.get("/api/posts/follower/:id",authenticate,  PostController.getFollowerPosts )
 };
