@@ -4,14 +4,13 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import SendIcon from "@mui/icons-material/Send";
 import TextField from "@mui/material/TextField";
-import IconButton from "@mui/material/IconButton";
 import axios from "axios";
 import { navigate } from "@reach/router";
 import io from "socket.io-client";
 import Navbar from "../Navigation/Navbar";
-import Login from "../registration/Login";
+
+import Button from "@mui/material/Button";
 
 export default function Messenger(props) {
 const cookie = document.cookie.match(/^(.*;)?\s*usertoken\s*=\s*[^;]+(.*)?$/);
@@ -43,25 +42,47 @@ console.log(localStorage.getItem("userData"));
         navigate(`/user/inbox`);
       });
 
+
     const getData = async () => {
+      const pullMessages=()=>
+      {axios
+        .get(
+          `http://localhost:8000/api/messages/${fromId}/${LoggedInUser.user_id}`,
+          {
+            withCredentials: true,
+          }
+        )
+        .then((res) => {
+          console.log("All messages", res.data);
+          console.log(res.data);
+          setMessages(res.data); // [1, 2, 3]
+        })
+        .catch((err) => {
+          navigate(`/user/inbox`);
+        });
+
+      }
       await axios
-        .get("http://localhost:8000/api/users", {
+        .get(`http://localhost:8000/api/users/${LoggedInUser.user_id}`, {
           withCredentials: true,
         })
         .then((res) => {
+          console.log("this user data", res.data.following)
           console.log(res.data);
           //Filter other than Varsha for testing- assuming she isnt follower
-          const filteredNonFollowers = res.data.filter(
-            (item) => item._id !== "618dad1d14738bb3d7fd6c9d"
-          );
-          
+          const filteredNonFollowers = res.data.following
+          console.log("filteredData",filteredNonFollowers)
           //setFollowers(res.data);
-
+          console.log("clicked",props.id)
           if (props.id === "All") {
-            setClickedTd(res.data[0]._id);
-            fromId = res.data[0]._id;
-            console.log("To whom", props.id);
+            console.log("clicked",props.id)
+            
+            setClickedTd(filteredNonFollowers[0]._id);
+            fromId = filteredNonFollowers[0]._id;
+           
             setFollowers(filteredNonFollowers);
+            
+            pullMessages();
           } else {
             axios
               .get(`http://localhost:8000/api/users/${props.id}`, {
@@ -78,26 +99,17 @@ console.log(localStorage.getItem("userData"));
               });
             setClickedTd(props.id);
             fromId = props.id;
+            pullMessages();
           }
 
-          axios
-            .get(
-              `http://localhost:8000/api/messages/${fromId}/${LoggedInUser.user_id}`,
-              {
-                withCredentials: true,
-              }
-            )
-            .then((res) => {
-              console.log("All messages", res.data);
-              console.log(res.data);
-              setMessages(res.data); // [1, 2, 3]
-            })
-            .catch((err) => {
-              navigate(`/user/inbox`);
-            });
+          console.log("from User",fromId)
+          console.log("to User",LoggedInUser.user_id)
+      
+          
         })
         .catch((err) => {
-          navigate(`/admin/home`);
+          console.log(err)
+          //navigate(`/admin/home`);
         });
     };
     getData();
@@ -182,9 +194,7 @@ console.log(localStorage.getItem("userData"));
   return (
       <>
     <div>
-    {cookie &&<Navbar />}
-
-    {!cookie && <Login></Login>}
+    <Navbar />
   </div>
   {cookie && (
     <Box sx={{ display: "flex", m: 5 }}>
@@ -274,11 +284,13 @@ console.log(localStorage.getItem("userData"));
               label="Type here"
               id="messageInout"
               value={currentmsg}
+              
               onChange={(e) => setCurrentmsg(e.target.value)}
             />
-            <IconButton onClick={sendHandler}>
-              <SendIcon sx={{ pt: 3 }}></SendIcon>
-            </IconButton>
+              <Button onClick={sendHandler} variant="contained" size="small" color="success">
+        send
+        </Button>
+        
           </Box>
         </Paper>
       </Box>

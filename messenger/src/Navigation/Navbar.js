@@ -1,4 +1,10 @@
+
+
 import React, { useEffect, useState } from "react";
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import HomeIcon from '@mui/icons-material/Home';
+
 
 import {
   AppBar,
@@ -29,8 +35,9 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: theme.spacing(5),
     marginRight: theme.spacing(2),
     "&:hover": {
-      color: "yellow",
+      color: "blue",
       borderBottom: "1px solid white",
+      textDecoration: "none",
     },
   },
   BrandLink: {
@@ -63,6 +70,8 @@ const useStyles = makeStyles((theme) => ({
 function Navbar() {
   const classes = useStyles();
   const [User, setLoggedInUser] = useState({});
+  const userId = localStorage.user && JSON.parse(localStorage.user).user_id;
+
   useEffect(() => {
     const LoggedInUser = localStorage.user && JSON.parse(localStorage.user);
     console.log(LoggedInUser);
@@ -137,9 +146,16 @@ function Navbar() {
               Home
             </Link>
              */}
-               <Link to="/user/home" className={classes.link}>Home</Link>
-               <Link to="/user/inbox/All" className={classes.link}>Messenger</Link>
-               <Link to="/user/marketplace" className={classes.link}>Marketplace</Link>
+               <Link to="/user/home" className={classes.link}><HomeIcon fontSize="inherit"/></Link>
+               <Link to="/user/inbox/All" className={classes.link}> <MailOutlineIcon fontSize="inherit"/></Link>
+
+ 
+               <Link to="/user/marketplace" className={classes.link}> <StorefrontIcon fontSize="inherit"/></Link>
+               
+              
+
+
+               
                 {/*    <Link to="/admin/events" className={classes.link}>
               Manage Events
             </Link> */}
@@ -165,7 +181,6 @@ function Navbar() {
                   </li>
                 </ul>
                 
-                {/* <Logout></Logout> */}
               </>
             ) : (
               <Link to="/admin/home" className={classes.link}>

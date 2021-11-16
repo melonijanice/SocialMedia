@@ -131,8 +131,7 @@ export default function Login(props) {
         marginLeft: { md: 25, lg: 50 },
         marginTop: "30px",
         minWidth: { md: 350 },
-        "& .MuiTextField-root": { m: 1, width: "40ch" },
-        backgroundColor: "#00A8C9 !important",
+        "& .MuiTextField-root": { m: 1, width: "40ch" }
       }}
       noValidate
       autoComplete="off"
@@ -186,7 +185,7 @@ export default function Login(props) {
             Login
           </Button>
           <div>
-            <Link to="/users/register">Need a library card?</Link>
+            <Link to="/user/register">New user?</Link>
           </div>
         </div>
       </div>

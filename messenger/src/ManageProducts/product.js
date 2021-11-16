@@ -26,11 +26,12 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 
 import ChatIcon from '@mui/icons-material/Chat';
 import PaymentIcon from '@mui/icons-material/Payment';
 import moment from 'moment'
-// import StripePayment from '../payment/StripePayment'
+import StripePayment from './payment'
 
 
 
@@ -47,7 +48,7 @@ export default function Product(props) {
 
     const {product ,productsRenderFlag, setProductsRenderFlag ,userId, LoggedInUser} = props
     
-
+    
 
     // const [updateProduct, setUpdateProduct] = useState({})
     // let loggedInUser = product.owner //+'1'
@@ -62,12 +63,22 @@ export default function Product(props) {
 
         axios.put(`http://localhost:8000/api/product/${product._id}`, newObject) //{withCredentials:true} based on group project db
         .then(res =>{
+            setProductsRenderFlag(!productsRenderFlag)
             console.log(" check if refresh is needed")
         })
         .catch( error => console.log(error))
 
 
     }
+
+
+
+    // useEffect(() => {
+    //     axios.get(`http://localhost:8000/api/users/${product.owner_id}`,{},{withCredentials: true,})
+    //     .then( res=>{
+    //         console.log("from product",res.data)
+    //     })
+    // }, [])
 
 
     //     const deleteItem =  (product_id)=>{
@@ -95,15 +106,16 @@ export default function Product(props) {
         })
     }
 
-
+    console.log("userIduserIduserIduserId",userId)
+    console.log("owner_idowner_idowner_id",product.owner_id)
 
 
     return (
-        <Card sx={{ maxWidth:345}}>
+        <Card sx={{ maxWidth:345  }}>
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                    {LoggedInUser.name[0]}
+                    {/* {LoggedInUser.name[0]} */}
                 </Avatar>
                 }
                 action={
@@ -139,19 +151,24 @@ export default function Product(props) {
 
 
 
-            { product.owner_id === userId  ?
+            { product.owner_id === userId  && userId ?
                 <Box>  
                 <IconButton onClick={ (e)=> navigate(`/user/marketplace/editProduct/${product._id}`)}> <EditIcon /></IconButton>
                 <IconButton onClick={deleteHandler}> <DeleteIcon /></IconButton>
-                </Box>:
+                </Box>
+                :
                 <Box>  
                 <IconButton aria-label="add to favorites">
                     <FavoriteIcon onClick={likeHandler} />
                     <p>{product.like}</p>
                 </IconButton>
-    
                 <IconButton >
+                    
                     <ChatIcon  onClick={(e)=>{navigate(`/user/inbox/${product.owner_id}`)}}/>
+                </IconButton>
+
+                <IconButton >
+                    <StripePayment product={product}> </StripePayment>
                 </IconButton>
                 </Box>
             }
@@ -161,7 +178,7 @@ export default function Product(props) {
 
 
 
-            {/* <StripePayment product={product}> </StripePayment> */}
+            
 
             </CardActions>
 

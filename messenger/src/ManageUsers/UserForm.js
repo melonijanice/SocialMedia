@@ -3,6 +3,7 @@ import React, { useReducer } from "react";
 import TextField from "@mui/material/TextField";
 import "../App.css";
 import Button from "@mui/material/Button";
+import { Link } from "@reach/router";
 
 export default function UserForm(props) {
 
@@ -84,12 +85,11 @@ export default function UserForm(props) {
       noValidate
       autoComplete="off"
     >
+
       <div style={{padding:"10px"}}>
-        To sign up, complete the form below. You will receive a library card
-        number upon approval from existing Admin which you may use to
-        immediately access our books. Remember, your Dojo Card will expire after
-        1 year. Welcome to Dojo Public Library, and happy reading!
+        To sign up, complete the form below. 
       </div>
+
       <div>
         <p className="error-text">
           {props.errors !== "" &&
@@ -209,7 +209,11 @@ export default function UserForm(props) {
         <Button onClick={onSubmitHandler} variant="contained" color="success">
         {props.isEdit==="true"?"Update":"Register"}
         </Button>
+        <div>
+            <Link to="/user/login">Sign In</Link>
+          </div>
       </div>
+    
     </Box>
   );
 }
