@@ -90,7 +90,8 @@ module.exports = {
               const userToken = jwt.sign(
                 {
                   user_id: userRecord._id,
-                  email: userRecord.email
+                  email: userRecord.email,
+                  following:userRecord.following
                 },
                 process.env.JWT_SECRET
               );
@@ -158,5 +159,118 @@ module.exports = {
       .then((deletedUser) => response.json(deletedUser))
       .catch((err) => res.json(err));
   },
+
+  search: async (req, res) => {
+    try {
+      const users = await UserManager.find({
+        username: { $regex: req.query.username },
+      })
+        .limit(10)
+        .select("name username avatar");
+
+      res.json({ users });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  follow: async (req, res) => {
+    try {
+
+      const user = await UserManager.find({
+        _id: req.params.toFollow_id,
+        followers: req.params.user_id,
+      });
+      if (user.length > 0)
+        return res
+          .status(500)
+          .json({ message: "Already following this user." });
+
+      const newUser = await UserManager.findOneAndUpdate(
+        { _id: req.params.toFollow_id },
+        {
+          $push: { followers: req.params.user_id },
+        },
+        { new: true }
+      ).populate("followers following", "-password");
+        
+      await UserManager.findOneAndUpdate(
+        { _id: req.params.user_id },
+        {
+          $push: { following: req.params.toFollow_id },
+        },
+        { new: true }
+      );
+
+      return res.json({ 
+        newUser });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  unfollow: async (req, res) => {
+    try {
+      const newUser = await UserManager.findOneAndUpdate(
+        { _id: req.params.toFollow_id},
+        {
+          $pull: { followers: req.params.user_id },
+        },
+        { new: true }
+      ).populate("followers following", "-password");
+
+      await UserManager.findOneAndUpdate(
+        { _id: req.params.user_id },
+        {
+          $pull: { following: req.params.toFollow_id },
+        },
+        { new: true }
+      );
+
+      return res.json({ newUser });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  suggestions: async (req, res) => {
+    try {
+      const user = await UserManager.find({
+        _id: req.params.id
+      });
+      //const str = JSON.stringify(user[0].following).replace('[',"").replace(']',"").replace(/\"/g, "");
+      //const user_following = str.split(',');
+      console.log(user[0]._id)
+      
+      const newArr = [...user[0].following, user[0]._id];
+      const num = req.query.num || 10;
+      console.log(newArr)
+      const users = await UserManager.aggregate([
+        { $match: { _id: { $nin: newArr } } },
+        { $sample: { size: Number(num) } },
+        {
+          $lookup: {
+            from: "usermanagers",
+            localField: "followers",
+            foreignField: "_id",
+            as: "followers",
+          },
+        },
+        {
+          $lookup: {
+            from: "usermanagers",
+            localField: "following",
+            foreignField: "_id",
+            as: "following",
+          },
+        },
+      ]).project("-password");
+      console.log(users)
+      return res.json({
+        users,
+        result: users.length,
+      });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+ 
   
 };
