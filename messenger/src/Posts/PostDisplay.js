@@ -95,8 +95,6 @@ const PostDisplay = (props) => {
           }}
         >
           <div class="card-body">
-            
-        
             {user.user_id===element.postedBy._id && <div style={{textAlign:"right"}}>
             <IconButton
                 id={element._id}
