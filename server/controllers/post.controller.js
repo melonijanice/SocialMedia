@@ -43,7 +43,6 @@ module.exports.getPosts = (request, response) => {
 };
 module.exports.getFollowerPosts = (request, response) => {
   console.log(request.params.id);
-
   UserManager.findOne({ _id: request.params.id })
     .then((user) => {
       console.log(request.params.id)
