@@ -48,7 +48,7 @@ module.exports.getFollowerPosts = (request, response) => {
     .then((user) => {
       console.log(request.params.id)
       console.log(user._id)
-      PostManager.find({postedBy: { $in: user.following }})
+      PostManager.find({postedBy: { $in: [...user.following,request.params.id]}})
         .populate("postedBy")
         .populate("likedBy")
         .populate("sharedBy")
