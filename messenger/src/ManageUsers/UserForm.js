@@ -84,7 +84,11 @@ export default function UserForm(props) {
       noValidate
       autoComplete="off"
     >
-    
+
+      <div style={{padding:"10px"}}>
+        To sign up, complete the form below. 
+      </div>
+
       <div>
         <p className="error-text">
           {props.errors !== "" &&

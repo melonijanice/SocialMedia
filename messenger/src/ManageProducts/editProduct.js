@@ -5,9 +5,10 @@ import {Link, navigate} from '@reach/router'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Navbar from '../Navigation/Navbar' 
+
 
 export default function EditProduct(props) {
-    console.log("props.id",props)
 
     const [product, setProduct] = useState("")
     const [productId, setProductId] = useState("")
@@ -15,7 +16,7 @@ export default function EditProduct(props) {
     const [price, setPrice] = useState()
     const [description, setDescription] = useState("")
     const [images, setImages] = useState([])
-    const [owner, setOwner] = useState("")
+    const [owner_id, setOwner_id] = useState("")
     const [errors, setErrors] = useState({})
     const [loaded, setLoaded] = useState(false);
     
@@ -23,32 +24,37 @@ export default function EditProduct(props) {
     useEffect(() => {
         axios.get(`http://localhost:8000/api/product/${props.id}`)
         .then( res =>{
-            console.log("res data",res.data)
             setProduct(res.data)
             setLoaded(true)
+            console.log("res.data", res.data)
+            setProductId(product.product_id)
+            setTitle(product.title)
+            setDescription(product.description)
+            setPrice(product.price)
+            setImages(product.images)
+            
 
         })
         .catch( error => console.log(error))
-    }, [props.id])
+    }, [loaded])
+    console.log("received from db",product)
 
+    console.log("sent to put",{
+        // owner_id,
+        productId,
+        title,
+        price,
+        description,
+        images
 
-
+    })
     
 
     const submitHandler = (e)=>{
         e.preventDefault();
-        console.log("inside submit handler")
-        console.log({
-            owner,
-            productId,
-            title,
-            price,
-            description,
-            images
 
-        })
-        axios.post('http://localhost:8000/api/product',{
-            owner:owner,
+        axios.put(`http://localhost:8000/api/product/${props.id}`,{
+            // owner_id:owner_id,
             product_id:productId,
             title:title,
             price:price,
@@ -58,7 +64,7 @@ export default function EditProduct(props) {
         })
         .then(res =>{
             console.log("res.data.message after creating product", res.data.message)
-            navigate("/")
+            navigate("/user/marketplace")
         })
         .catch( error =>{
             console.log(error.response)
@@ -68,19 +74,18 @@ export default function EditProduct(props) {
 
     return (
         <div>
-            <h2>Edit Product</h2>
+
+            <Navbar />
 
             {loaded && ( <Box
                 component="form"
                 onSubmit={submitHandler}
                 sx={{
-                    marginLeft: {md: 25, lg:50 },
-                    marginTop: "30px",
-                    minWidth: { md: 350 },
-                    width: 600,
+                    marginLeft: {md: 25, lg:25 },
+                    marginTop: {md: 5, lg:5 },
+                    '& .MuiTextField-root': { m: 1, width: '100ch' },
                     flexDirection: "column",
                     alignItems: { xs: "center", md: "flex-start" },
-                    "& .MuiTextField-root": { ml: 4, width: "50ch"}
                 }}
                 noValidate
                 autoComplete="off"
@@ -89,7 +94,7 @@ export default function EditProduct(props) {
 
 
 
-            {/* <form onSubmit={submitHandler}> */}
+                <h2>Edit Product</h2>
 
                 <TextField
                     required
@@ -98,6 +103,7 @@ export default function EditProduct(props) {
                     label="product_id"
                     defaultValue={product.product_id}
                     onChange={(e)=>{setProductId(e.target.value)}}
+                    margine = "dense"
                     
                 />
                 
@@ -136,9 +142,9 @@ export default function EditProduct(props) {
                     onChange={(e)=>{setImages(e.target.value)}}
                 />
 
-
-                {/* <Button variant="contained" size="large"> Submit</Button> */}
-                <button className="create" type="submit">Create new product</button>
+                <Box>
+                <Button type="submit" variant="contained" size="large" > Edit  Product</Button>
+                </Box>
 
 
             {/* </form> */}

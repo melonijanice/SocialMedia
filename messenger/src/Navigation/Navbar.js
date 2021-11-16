@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from "react";
 
 import {
@@ -63,6 +65,8 @@ const useStyles = makeStyles((theme) => ({
 function Navbar() {
   const classes = useStyles();
   const [User, setLoggedInUser] = useState({});
+  const userId = localStorage.user && JSON.parse(localStorage.user).user_id;
+
   useEffect(() => {
     const LoggedInUser = localStorage.user && JSON.parse(localStorage.user);
     console.log(LoggedInUser);
@@ -139,7 +143,14 @@ function Navbar() {
              */}
                <Link to="/user/home" className={classes.link}>Home</Link>
                <Link to="/user/inbox/All" className={classes.link}>Messenger</Link>
+
+ 
                <Link to="/user/marketplace" className={classes.link}>Marketplace</Link>
+               
+              
+
+
+               
                 {/*    <Link to="/admin/events" className={classes.link}>
               Manage Events
             </Link> */}
@@ -165,7 +176,6 @@ function Navbar() {
                   </li>
                 </ul>
                 
-                {/* <Logout></Logout> */}
               </>
             ) : (
               <Link to="/admin/home" className={classes.link}>
