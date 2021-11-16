@@ -122,7 +122,7 @@ const PostDisplay = (props) => {
               <span style={{ color: "grey" }}>posted on their canvas</span>
             </p>
             <p class="card-text">{element.postBody}</p>
-            {element.Image &&<CardMedia sx={{maxWidth:"400px"}}
+            {element.Image &&<CardMedia sx={{maxWidth:"300px"}}
               component="img"
               image={`http://localhost:8000/Images/${element.Image}`}
              

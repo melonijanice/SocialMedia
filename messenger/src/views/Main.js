@@ -16,6 +16,7 @@ import CreateProduct from '../ManageProducts/createProduct'
 import EditProduct from '../ManageProducts/editProduct'
 
 
+
 export default function Marketplace() {
 
 
@@ -27,12 +28,6 @@ export default function Marketplace() {
     const [categoryFlag, setCategoryFlag]= useState(false)
     const [products, setProducts] = useState([])
     const [productsRenderFlag, setProductsRenderFlag]= useState(false)
-
-
-
-
-  
-
     const LoggedInUser = localStorage.user && JSON.parse(localStorage.user);
 
 
@@ -46,7 +41,9 @@ export default function Marketplace() {
                 // setProducts,
                 // setProductsRenderFlag
             }}>
+                 
                 <Router>
+                   
                     <Login path="/user/login/"/>
                     <Logout path="/user/logout/"/>
                     <Register path="/user/register"></Register>

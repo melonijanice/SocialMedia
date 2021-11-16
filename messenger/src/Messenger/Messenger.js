@@ -4,7 +4,7 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
-import SendIcon from "@mui/icons-material/Send";
+import SendAndArchiveIcon from '@mui/icons-material/SendAndArchive';
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import axios from "axios";
@@ -12,6 +12,7 @@ import { navigate } from "@reach/router";
 import io from "socket.io-client";
 import Navbar from "../Navigation/Navbar";
 import Login from "../registration/Login";
+import Button from "@mui/material/Button";
 
 export default function Messenger(props) {
 const cookie = document.cookie.match(/^(.*;)?\s*usertoken\s*=\s*[^;]+(.*)?$/);
@@ -274,11 +275,13 @@ console.log(localStorage.getItem("userData"));
               label="Type here"
               id="messageInout"
               value={currentmsg}
+              
               onChange={(e) => setCurrentmsg(e.target.value)}
             />
-            <IconButton onClick={sendHandler}>
-              <SendIcon sx={{ pt: 3 }}></SendIcon>
-            </IconButton>
+              <Button onClick={sendHandler} variant="contained" size="small" color="success">
+        send
+        </Button>
+        
           </Box>
         </Paper>
       </Box>

@@ -38,7 +38,6 @@ export default function Home() {
     <div>
       <div>
         {cookie && <Navbar />}
-
         {!cookie && <Login></Login>}
       </div>
       <Box
