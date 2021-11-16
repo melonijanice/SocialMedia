@@ -9,9 +9,7 @@ export default function Register(props) {
 
   const createUserInfo = (userData) => {
     axios
-      .post("http://localhost:8000/api/users", userData,{
-        withCredentials: true,
-      })
+      .post("http://localhost:8000/api/users", userData)
       .then((res) => {
         console.log(res.data.userLoggedIn);
         localStorage.user = JSON.stringify(res.data.userLoggedIn);
@@ -19,7 +17,7 @@ export default function Register(props) {
       })
       .catch((err) => {
         console.log(err.response.data);
-        //setErrors(err.response.data.errors);
+        setErrors(err.response.data.errors);
       });
   };
   return (
