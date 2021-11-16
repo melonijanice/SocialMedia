@@ -4,7 +4,11 @@ const UserManager = require("../models/user.model");
 
 module.exports.createMessage = (request, response) => {
   MessageManager.create(request.body)
-    .then((message) => response.json(message))
+    .then((message) => 
+    
+    {
+      
+      response.json(message)})
     .catch((err) => {
       response.status(400).json(err);
     });

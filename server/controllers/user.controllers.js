@@ -15,7 +15,7 @@ module.exports = {
       password,
       confirmPassword
     } = req.body;
-    console.log("recieved data for submit" + req.body);
+    
     
     UserManager.findOne({ email: email })
       .then((user) => {
@@ -71,7 +71,7 @@ module.exports = {
       .catch((err) => res.status(400).json(err))
   },
   login: (req, res) => {
-    console.log("Inside Login");
+  
     UserManager.findOne({ email: req.body.email }).then((userRecord) => {
       if (userRecord === null) {
         // email not found in users collection
@@ -79,18 +79,19 @@ module.exports = {
         //res.Status(400).json({ message: "Invalid Login Attempt" });
       }
       else {
-        console.log("before Bcrypt Login");
+     
 
         bcrypt
           .compare(req.body.password, userRecord.password)
           .then((isPasswordValid) => {
             if (isPasswordValid) {
-                console.log("Token",process.env.JWT_SECRET)
+               
               // password wasn't a match!
               const userToken = jwt.sign(
                 {
                   user_id: userRecord._id,
-                  email: userRecord.email
+                  email: userRecord.email,
+                  following:userRecord.following
                 },
                 process.env.JWT_SECRET
               );
@@ -123,11 +124,13 @@ module.exports = {
   },
   getAll: (req, res) => {
     UserManager.find({})
+    .populate("followers following", "-password")
       .then((user) => res.json(user))
       .catch((err) => res.json(err));
   },
   getOne: (req, res) => {
     UserManager.findOne({ _id: req.params.id })
+    .populate('following')
       .then((user) => res.json(user))
       .catch((err) => res.json(err));
   },
@@ -149,7 +152,7 @@ module.exports = {
       .then((updatedUser) => res.json(updatedUser))
       .catch((err) => {
         res.status(400).json(err);
-        console.log("Error adding to DB at API");
+   
         res.json(err);
       });
   },
@@ -158,5 +161,118 @@ module.exports = {
       .then((deletedUser) => response.json(deletedUser))
       .catch((err) => res.json(err));
   },
+
+  search: async (req, res) => {
+    try {
+      const users = await UserManager.find({
+        username: { $regex: req.query.username },
+      })
+        .limit(10)
+        .select("name username avatar");
+
+      res.json({ users });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  follow: async (req, res) => {
+    try {
+
+      const user = await UserManager.find({
+        _id: req.params.toFollow_id,
+        followers: req.params.user_id,
+      });
+      if (user.length > 0)
+        return res
+          .status(500)
+          .json({ message: "Already following this user." });
+
+      const newUser = await UserManager.findOneAndUpdate(
+        { _id: req.params.toFollow_id },
+        {
+          $push: { followers: req.params.user_id },
+        },
+        { new: true }
+      ).populate("followers following", "-password");
+        
+      await UserManager.findOneAndUpdate(
+        { _id: req.params.user_id },
+        {
+          $push: { following: req.params.toFollow_id },
+        },
+        { new: true }
+      );
+
+      return res.json({ 
+        newUser });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+ 
+  unfollow: async (req, res) => {
+    try {
+      const newUser = await UserManager.findOneAndUpdate(
+        { _id: req.params.toFollow_id},
+        {
+          $pull: { followers: req.params.user_id },
+        },
+        { new: true }
+      ).populate("followers following", "-password");
+
+      await UserManager.findOneAndUpdate(
+        { _id: req.params.user_id },
+        {
+          $pull: { following: req.params.toFollow_id },
+        },
+        { new: true }
+      );
+
+      return res.json({ newUser });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+  suggestions: async (req, res) => {
+    try {
+      const user = await UserManager.find({
+        _id: req.params.id
+      });
+      //const str = JSON.stringify(user[0].following).replace('[',"").replace(']',"").replace(/\"/g, "");
+      //const user_following = str.split(',');
+      
+      const newArr = [...user[0].following, user[0]._id];
+      const num = req.query.num || 10;
+     
+      const users = await UserManager.aggregate([
+        { $match: { _id: { $nin: newArr } } },
+        { $sample: { size: Number(num) } },
+        {
+          $lookup: {
+            from: "usermanagers",
+            localField: "followers",
+            foreignField: "_id",
+            as: "followers",
+          },
+        },
+        {
+          $lookup: {
+            from: "usermanagers",
+            localField: "following",
+            foreignField: "_id",
+            as: "following",
+          },
+        },
+      ]).project("-password");
+     
+      return res.json({
+        users,
+        result: users.length,
+      });
+    } catch (err) {
+      return res.status(500).json({ message: err.message });
+    }
+  },
+ 
   
 };

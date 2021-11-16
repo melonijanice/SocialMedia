@@ -188,9 +188,15 @@ export default function Product(props) {
                     <FavoriteIcon onClick={likeHandler} />
                     <p>{product.like}</p>
                 </IconButton>
-    
                 <IconButton >
-                    <ChatIcon  onClick={(e)=>{navigate(`/user/inbox/${product.owner_id}`)}}/>
+                    
+                    {/* <ChatIcon  onClick={(e)=>{navigate(`/user/inbox/${product.owner_id}`)}}/> */}
+                    {product.owner_id ?
+                        <ChatIcon  onClick={(e)=>{navigate(`/user/inbox/${product.owner_id}`)}}/>
+                        :
+                        <ChatIcon  onClick={(e)=>{navigate("/user/inbox/All")}}/>
+                    }
+
                 </IconButton>
 
                 <IconButton >

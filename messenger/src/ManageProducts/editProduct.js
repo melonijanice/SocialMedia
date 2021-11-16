@@ -26,14 +26,6 @@ export default function EditProduct(props) {
         .then( res =>{
             setProduct(res.data)
             setLoaded(true)
-            console.log("res.data", res.data)
-            setProductId(product.product_id)
-            setTitle(product.title)
-            setDescription(product.description)
-            setPrice(product.price)
-            setImages(product.images)
-            
-
         })
         .catch( error => console.log(error))
     }, [loaded])
@@ -75,9 +67,7 @@ export default function EditProduct(props) {
     return (
         <div>
 
-            <Navbar />
-
-            {loaded && ( <Box
+            {loaded && (<Box
                 component="form"
                 onSubmit={submitHandler}
                 sx={{
