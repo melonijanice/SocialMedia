@@ -19,7 +19,9 @@ app.use(
 );
 
 //connect to DB
-require("./config/mongoose.config");
+const URI = process.env.MONGODB_URL
+// require("./config/mongoose.config")(URI); // Mehrdad connecting to DB using URI
+require("./config/mongoose.config")
 
 //configure socket
 const socket = require("socket.io");

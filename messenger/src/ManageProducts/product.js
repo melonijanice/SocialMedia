@@ -47,6 +47,7 @@ export default function Product(props) {
     // const {userId ,productsRenderFlag, setProductsRenderFlag} = useContext(UserContext)
 
     const {product ,productsRenderFlag, setProductsRenderFlag ,userId, LoggedInUser} = props
+    const [likedBy, setLikedBy] = useState([])
     
     
 
@@ -56,17 +57,43 @@ export default function Product(props) {
 
 
     const likeHandler = (e)=>{
-        console.log("like was clicked for", product)
-        let newObject = {...product}
-        newObject = {...newObject, like:newObject.like+=1}
-        console.log("newObject after like is updated",newObject)
 
-        axios.put(`http://localhost:8000/api/product/${product._id}`, newObject) //{withCredentials:true} based on group project db
-        .then(res =>{
-            setProductsRenderFlag(!productsRenderFlag)
-            console.log(" check if refresh is needed")
-        })
-        .catch( error => console.log(error))
+        let newArr = likedBy
+
+        function isLiked(userIdToCheck) {
+            return userIdToCheck=== userId;
+          }
+        
+        const isPrevLiked = newArr.find(isLiked)
+        console.log("---->",newArr.find(isLiked))
+
+        if(isPrevLiked){
+            alert("you have already liked this item!")
+            navigate("/user/marketplace")
+
+        }
+        else{
+
+            newArr = [...newArr, userId]
+            setLikedBy(newArr)
+            console.log("likedBy",newArr)
+    
+    
+            console.log("like was clicked for", product)
+            let newObject = {...product}
+            newObject = {...newObject, like:newObject.like+=1 }
+            newObject = {...newObject, likedBy:newArr}
+    
+            console.log("newObject after like is updated",newObject)
+    
+            axios.put(`http://localhost:8000/api/product/${product._id}`, newObject) //{withCredentials:true} based on group project db
+            .then(res =>{
+                setProductsRenderFlag(!productsRenderFlag)
+                console.log(" check if refresh is needed")
+            })
+            .catch( error => console.log(error))
+
+        }
 
 
     }
@@ -106,8 +133,7 @@ export default function Product(props) {
         })
     }
 
-    console.log("userIduserIduserIduserId",userId)
-    console.log("owner_idowner_idowner_id",product.owner_id)
+
 
 
     return (
