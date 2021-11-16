@@ -85,10 +85,7 @@ export default function UserForm(props) {
       autoComplete="off"
     >
       <div style={{padding:"10px"}}>
-        To sign up, complete the form below. You will receive a library card
-        number upon approval from existing Admin which you may use to
-        immediately access our books. Remember, your Dojo Card will expire after
-        1 year. Welcome to Dojo Public Library, and happy reading!
+        To sign up, complete the form below. 
       </div>
       <div>
         <p className="error-text">

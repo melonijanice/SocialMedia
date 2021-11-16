@@ -5,8 +5,11 @@ import {Link, navigate} from '@reach/router'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import Navbar from '../Navigation/Navbar' 
 
 export default function CreateProduct() {
+    const userId = localStorage.user && JSON.parse(localStorage.user).user_id;
+
 
     const [productId, setProductId] = useState("")
     const [title, setTitle] = useState("")
@@ -16,12 +19,13 @@ export default function CreateProduct() {
     const [owner, setOwner] = useState("")
     const [errors, setErrors] = useState({})
     
+    
 
     const submitHandler = (e)=>{
         e.preventDefault();
         console.log("inside submit handler")
         console.log({
-            owner,
+            userId,
             productId,
             title,
             price,
@@ -30,7 +34,7 @@ export default function CreateProduct() {
 
         })
         axios.post('http://localhost:8000/api/product',{
-            owner:owner,
+            owner_id:userId,
             product_id:productId,
             title:title,
             price:price,
@@ -40,7 +44,7 @@ export default function CreateProduct() {
         })
         .then(res =>{
             console.log("res.data.message after creating product", res.data.message)
-            navigate("/")
+            navigate("/user/marketplace")
         })
         .catch( error =>{
             console.log(error.response)
@@ -50,19 +54,18 @@ export default function CreateProduct() {
 
     return (
         <div>
-            <h2>Create Product</h2>
+            <Navbar />
+            
 
             <Box
                 component="form"
                 onSubmit={submitHandler}
                 sx={{
-                    marginLeft: {md: 25, lg:50 },
-                    marginTop: "30px",
-                    minWidth: { md: 350 },
-                    width: 600,
+                    marginLeft: {md: 25, lg:25 },
+                    marginTop: {md: 5, lg:5 },
+                    '& .MuiTextField-root': { m: 1, width: '100ch' },
                     flexDirection: "column",
                     alignItems: { xs: "center", md: "flex-start" },
-                    "& .MuiTextField-root": { ml: 4, width: "50ch"}
                 }}
                 noValidate
                 autoComplete="off"
@@ -71,7 +74,7 @@ export default function CreateProduct() {
 
 
 
-            {/* <form onSubmit={submitHandler}> */}
+                <h2>Create Product</h2>
 
                 <TextField
                     required
@@ -118,9 +121,11 @@ export default function CreateProduct() {
                     onChange={(e)=>{setImages(e.target.value)}}
                 />
 
-
-                {/* <Button variant="contained" size="large"> Submit</Button> */}
-                <button className="create" type="submit">Create new product</button>
+                <div>
+                <Button type="submit" variant="contained" size="large" > Submit New Product</Button>
+                </div>
+                
+                {/* <button className="create" type="submit">Create new product</button> */}
 
 
             {/* </form> */}

@@ -1,4 +1,5 @@
 //configure Express
+
 require("dotenv").config();
 const express = require("express");
 const app = express();
@@ -139,7 +140,7 @@ require("./routes/message.routes")(app);
 require("./routes/products.routes")(app);
 
 require("./routes/post.routes")(app);
-
+require('./routes/payment.routes')(app)
 
 
 //listen on port
