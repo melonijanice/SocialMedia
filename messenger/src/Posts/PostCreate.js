@@ -8,7 +8,7 @@ import PostDisplay from "../Posts/PostDisplay";
 import IconButton from "@mui/material/IconButton";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { styled } from "@mui/material/styles";
-import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 const Input = styled("input")({
   display: "none",
@@ -21,9 +21,8 @@ const PostCreate = (e) => {
   const [newPost, setnewPost] = useState("");
   const [file, setFile] = useState("");
 
-
   useEffect(() => {
-    const LoggedInUser = JSON.parse(localStorage.user);
+    const LoggedInUser = localStorage.user && JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
   }, []);
   const onChangeFileHandler = (e) => {
@@ -34,9 +33,8 @@ const PostCreate = (e) => {
   const cancelImage = (e) => {
     e.preventDefault();
     setFile("");
-    
   };
-  
+
   const onSubmitFileHandler = () => {
     const formData = new FormData();
     formData.append("file", file);
@@ -58,7 +56,7 @@ const PostCreate = (e) => {
 
     const newPost = {
       postBody,
-      Image:file.name,
+      Image: file.name,
       postedBy: user.user_id,
     };
     console.log(newPost);
@@ -74,7 +72,7 @@ const PostCreate = (e) => {
           onSubmitFileHandler();
           setFile("");
         }
-        setErrors("")
+        setErrors("");
         //navigate("/displayPost");
       })
       .catch((err) => {
@@ -125,15 +123,16 @@ const PostCreate = (e) => {
           </IconButton>
         </label>
         <span>{file.name}</span>
-       {file && <IconButton
-               
-               name="Delete"
-               aria-label="delete"
-               size="large"
-               onClick={cancelImage}
-             >
-               <RemoveCircleOutlineIcon fontSize="inherit"/>
-             </IconButton>} 
+        {file && (
+          <IconButton
+            name="Delete"
+            aria-label="delete"
+            size="large"
+            onClick={cancelImage}
+          >
+            <RemoveCircleOutlineIcon fontSize="inherit" />
+          </IconButton>
+        )}
       </Box>
 
       <PostDisplay newPost={newPost} />

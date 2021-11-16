@@ -183,7 +183,7 @@ console.log(localStorage.getItem("userData"));
   return (
       <>
     <div>
-    {cookie &&<Navbar />}
+    <Navbar />
 
     {!cookie && <Login></Login>}
   </div>

@@ -2,6 +2,7 @@ import UserForm from "../ManageUsers/UserForm";
 import axios from "axios";
 import React, { useState } from "react";
 import { navigate } from "@reach/router";
+import Navbar from "../Navigation/Navbar";
 
 
 export default function Register(props) {
@@ -13,7 +14,7 @@ export default function Register(props) {
       .then((res) => {
         console.log(res.data.userLoggedIn);
         localStorage.user = JSON.stringify(res.data.userLoggedIn);
-          navigate("/user/login");
+          navigate("/user/home");
       })
       .catch((err) => {
         console.log(err.response.data);
@@ -22,13 +23,16 @@ export default function Register(props) {
   };
   return (
 <div>
-
+<div>
+       <Navbar />
+      </div>
         <UserForm
           userData=""
           errors={errors}
           onSubmitProp={createUserInfo}
         
         ></UserForm>
+    
     
     </div>
   );

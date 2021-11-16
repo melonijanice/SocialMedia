@@ -1,44 +1,63 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../Navigation/Navbar";
-import Login from "../registration/Login";
 import axios from "axios";
 import { navigate } from "@reach/router";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import Box from "@mui/material/Box";
 import PostCreate from "../Posts/PostCreate";
-
+import IconButton from "@mui/material/IconButton";
 
 export default function Home() {
   const cookie = document.cookie.match(/^(.*;)?\s*usertoken\s*=\s*[^;]+(.*)?$/);
   console.log(localStorage.getItem("userData"));
   const [User, setLoggedInUser] = useState({});
-  const [users, setUsers] = useState([]);
-  
+  const [following, setFollowing] = useState([]);
+
   useEffect(() => {
-    const LoggedInUser = localStorage.user && JSON.parse(localStorage.user);
+    const LoggedInUser = localStorage.user? JSON.parse(localStorage.user):"";
     console.log(LoggedInUser);
     setLoggedInUser(LoggedInUser);
     axios
-      .get("http://localhost:8000/api/users", {
+      .get(`http://localhost:8000/suggestions/${LoggedInUser.user_id}`, {
         withCredentials: true,
       })
       .then((res) => {
         console.log(res.data);
-        setUsers(res.data);
+        setFollowing(res.data.users);
       })
       .catch((err) => {
-        navigate(`/user/home`);
+        navigate(`/user/login`);
       });
   }, []);
+  const followHandler = (e) => {
+    e.preventDefault();
+    console.log(e.target.id);
+    axios
+      .put(
+        `http://localhost:8000/profile/${e.target.id}/${User.user_id}/follow`,
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+        const filterFollowers = following.filter(
+          (user) => res.data.newUser._id !== user._id
+        );
+        console.log(filterFollowers);
+        setFollowing(filterFollowers);
+      })
+      .catch((err) => {
+        navigate(`/user/login`);
+      });
+  };
   return (
     <div>
       <div>
-        {cookie && <Navbar />}
-        {!cookie && <Login></Login>}
+       <Navbar />
       </div>
       <Box
         elevation={7}
@@ -49,9 +68,8 @@ export default function Home() {
           display: "flex",
         }}
       >
-        <PostCreate/>
-      
-       
+        <PostCreate />
+
         <Box
           sx={{
             bgcolor: "background.paper",
@@ -59,7 +77,7 @@ export default function Home() {
             p: 1,
           }}
         >
-          {users.map((user) => (
+          {following.map((user) => (
             <Box
               name={user._id}
               sx={{
@@ -85,9 +103,24 @@ export default function Home() {
                     {user.firstName + " " + user.lastName}
                   </Typography>
                   <Typography>
-                    <Button variant="contained" size="small" color="success">
+             {/*        <Button
+                      id={user._id}
+                      onClick={followHandler}
+                      variant="contained"
+                      size="small"
+                      color="success"
+                    >
                       Follow
-                    </Button>
+                    </Button> */}
+                    <IconButton
+                      id={user._id}
+                      name="Delete"
+                      aria-label="delete"
+                      size="large"
+                      onClick={followHandler}
+                    >
+                      <GroupAddIcon fontSize="inherit" sx={{ color: "blue" }}/>
+                    </IconButton>
                   </Typography>
                 </Grid>
               </Grid>
