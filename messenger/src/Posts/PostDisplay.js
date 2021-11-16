@@ -17,10 +17,13 @@ const PostDisplay = (props) => {
   const [newCommentLoaded, setNewCommentLoaded] = useState("");
   const [elementMode,setElementMode]=useState("")
   const [deleteFlag, setdeleteFlag] = useState(false);
+  const [user,setLoggedInUser]=useState("")
   useEffect(() => {
+    const LoggedInUser = JSON.parse(localStorage.user);
+    setLoggedInUser(LoggedInUser);
     console.log("new post",props.newPost)
     axios
-      .get("http://localhost:8000/api/posts", {
+      .get(`http://localhost:8000/api/posts/follower/${LoggedInUser.user_id}`, {
         withCredentials: true,
       })
       .then((res) => {
@@ -92,9 +95,7 @@ const PostDisplay = (props) => {
           }}
         >
           <div class="card-body">
-            
-        
-            <div style={{textAlign:"right"}}>
+            {user.user_id===element.postedBy._id && <div style={{textAlign:"right"}}>
             <IconButton
                 id={element._id}
                 name="Edit"
@@ -113,7 +114,7 @@ const PostDisplay = (props) => {
               >
                 <DeleteIcon id={element._id} fontSize="inherit" onClick={deleteHandler}/>
               </IconButton>
-              </div>
+              </div>}
               <div style={{ display:elementMode===element._id?"none":""}}>
             <p>
               <span style={{ fontWeight: "bold" }}>
