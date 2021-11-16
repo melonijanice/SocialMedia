@@ -35,7 +35,7 @@ const productController = {
 
 
     createProduct: async (req, res)=>{
-        const {owner_id, product_id, title, price, description, content, images, like} = req.body;
+        const {owner_id, product_id, title, price, description, images, like} = req.body;
 
         console.log("createProduct",req.body)
 
@@ -46,21 +46,21 @@ const productController = {
                 return res.status(400).json({message: "The product already exists"})
             }
 
-            const newProduct = new Product(
-                {
-                    owner_id:owner_id,
-                    product_id:product_id,
-                    title : title.toLowerCase(),
-                    price :price,
-                    description: description,
-                    content: content,
-                    images:images,
-                    like:like
+            // const newProduct = new Product(
+            //     {
+            //         owner_id:owner_id,
+            //         product_id:product_id,
+            //         title : title.toLowerCase(),
+            //         price :price,
+            //         description: description,
+            //         images:images,
+            //         like:like
 
-                }
-            )
+            //     }
+            // )
 
-            await newProduct.save()
+            // await newProduct.save()
+            Product.create(req.body)
             res.json({message:"New product was created"})
 
             
@@ -84,7 +84,7 @@ const productController = {
         console.log(req.body)
 
 
-        const { owner_id, product_id, title, price, description, content, images, like} = req.body;
+        const { owner_id, product_id, title, price, description, content, images, like ,likedBy} = req.body;
 
         try {
 
@@ -100,7 +100,8 @@ const productController = {
                 description: description,
                 content: content,
                 images:images,
-                like:like
+                like:like,
+                likedBy:likedBy
 
             })
             res.json({ message: "A product was updated"})
