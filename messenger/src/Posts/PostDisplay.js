@@ -140,7 +140,6 @@ const PostDisplay = (props) => {
 
             {/* <input type="text"></input> */}
           </div>
-         
         </Paper>
       ))}
     </>
