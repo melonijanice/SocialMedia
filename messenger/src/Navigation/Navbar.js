@@ -122,12 +122,14 @@ function Navbar() {
       <CssBaseline />
       <Toolbar>
         <Typography variant="h4" className={classes.logo}>
+        <Link to="/user/home">
           <img
             className={classes.Image}
             src="/Social_logo.png"
             alt="Image_logo"
           />
-          <Link to="/admin/home" className={classes.BrandLink}>
+             </Link>
+          <Link to="/user/home" className={classes.BrandLink}>
           Canvas
                 </Link>
           

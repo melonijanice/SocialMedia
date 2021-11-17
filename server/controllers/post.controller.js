@@ -38,6 +38,7 @@ module.exports.getPosts = (request, response) => {
     .populate("postedBy")
     .populate("likedBy")
     .populate("sharedBy")
+    .sort({ updatedAt: "desc" })
     .then((messages) => response.json(messages))
     .catch((err) => response.json(err));
 };
@@ -53,6 +54,7 @@ module.exports.getFollowerPosts = (request, response) => {
         .populate("postedBy")
         .populate("likedBy")
         .populate("sharedBy")
+        .sort({ updatedAt: "desc" })
         .then((messages) => response.json(messages))
         .catch((err) => response.json(err));
     })
