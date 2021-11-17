@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Navbar from "../Navigation/Navbar";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 export default function CreateProduct() {
   const userId = localStorage.user && JSON.parse(localStorage.user).user_id;
@@ -29,19 +30,25 @@ export default function CreateProduct() {
   useEffect(() => {}, [productsRenderFlag]);
   const onChangeFileHandler = (e) => {
     e.preventDefault();
-    console.log("filename",)
+   
     setFile(e.target.files[0]);
-    console.log(e.target.files[0]);
+    setImages(e.target.files[0].name)
+   
+  };
+  const cancelImage = (e) => {
+    e.preventDefault();
+    setFile("");
+    setImages("")
   };
   const onSubmitFileHandler = () => {
     const formData = new FormData();
     formData.append("file", file);
-    console.log(formData);
+  
 
     axios
       .post("http://localhost:8000/api/upload", formData)
       .then((res) => {
-        console.log(res.data);
+       
       })
 
       .catch((err) => {
@@ -50,15 +57,14 @@ export default function CreateProduct() {
   };
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log("inside submit handler");
-    console.log({
-      userId,
-      productId,
-      title,
-      price,
-      description,
-      images:file.name,
-    });
+    console.log("inside submit handler",{
+        userId,
+        productId,
+        title,
+        price,
+        description,
+        images:file&&file.name,
+      });
     axios
       .post("http://localhost:8000/api/product", {
         owner_id: userId,
@@ -156,7 +162,7 @@ export default function CreateProduct() {
           id="outlined-required"
           defaultValue=""
           disabled
-          value={file.name}
+          value={images}
           onChange={(e) => {
             setImages(file.name);
           }}
@@ -179,6 +185,16 @@ export default function CreateProduct() {
                 alt="Image_logo"
               />
             </IconButton>
+            {file && (
+          <IconButton
+            name="Delete"
+            aria-label="delete"
+            size="large"
+            onClick={cancelImage}
+          >
+            <RemoveCircleOutlineIcon fontSize="inherit" />
+          </IconButton>
+        )}
           </label>
           <span></span>
           <Button type="submit" variant="contained" size="large">

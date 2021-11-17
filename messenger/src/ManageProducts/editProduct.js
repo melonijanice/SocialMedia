@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import Navbar from "../Navigation/Navbar";
 import { styled } from "@mui/material/styles";
 import IconButton from "@mui/material/IconButton";
+import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 export default function EditProduct(props) {
   const [product, setProduct] = useState("");
@@ -30,13 +31,52 @@ export default function EditProduct(props) {
       .get(`http://localhost:8000/api/product/${props.id}`)
       .then((res) => {
         setProduct(res.data);
+        setProductId(res.data.product_id)
+        setTitle(res.data.title)
+        setPrice(res.data.price)
+        setDescription(res.data.description)
+        setImages(res.data.images)
         setLoaded(true);
       })
       .catch((error) => console.log(error));
   }, [loaded]);
   console.log("received from db", product);
 
-  console.log("sent to put", {
+  const cancelImage = (e) => {
+    e.preventDefault();
+    setFile("");
+    setImages("")
+  };
+   const onChangeFileHandler = (e) => {
+    e.preventDefault();
+    console.log("filename",)
+    setFile(e.target.files[0]);
+    setImages(e.target.files[0].name)
+
+    console.log(e.target.files[0]);
+  };
+  const onSubmitFileHandler = () => {
+    const formData = new FormData();
+    formData.append("file", file);
+    console.log(formData);
+    
+    axios
+      .post("http://localhost:8000/api/upload", formData)
+      .then((res) => {
+        console.log(res.data);
+       
+      })
+
+      .catch((err) => {
+        console.log("Is file uploaded");
+        console.log(err.response.data);
+      });
+  };
+  const submitHandler = (e) => {
+    e.preventDefault();
+   console.log("entered")
+   console.log("file",file)
+   console.log("sent to put", {
     // owner_id,
     productId,
     title,
@@ -44,31 +84,6 @@ export default function EditProduct(props) {
     description,
     images,
   });
-  const onChangeFileHandler = (e) => {
-    e.preventDefault();
-    console.log("filename",)
-    setFile(e.target.files[0]);
-    setImages(e.target.files[0])
-    console.log(e.target.files[0]);
-  };
-  const onSubmitFileHandler = () => {
-    const formData = new FormData();
-    formData.append("file", file);
-    console.log(formData);
-
-    axios
-      .post("http://localhost:8000/api/upload", formData)
-      .then((res) => {
-        console.log(res.data);
-      })
-
-      .catch((err) => {
-        console.log(err.response.data);
-      });
-  };
-  const submitHandler = (e) => {
-    e.preventDefault();
-
     axios
       .put(`http://localhost:8000/api/product/${props.id}`, {
         // owner_id:owner_id,
@@ -76,13 +91,14 @@ export default function EditProduct(props) {
         title: title,
         price: price,
         description: description,
-        images: file.name,
+        images:file?file.name:images
       })
       .then((res) => {
-        if (file !== "") {
+         console.log("file",file)
+         if (file !== "") {
             onSubmitFileHandler();
             setFile("");
-          }
+          } 
         console.log(
           "res.data.message after creating product",
           res.data.message
@@ -118,6 +134,7 @@ export default function EditProduct(props) {
             id="outlined-required"
             label="product_id"
             defaultValue={product.product_id}
+            Value={product.product_id}
             onChange={(e) => {
               setProductId(e.target.value);
             }}
@@ -159,10 +176,13 @@ export default function EditProduct(props) {
             label="images"
             id="outlined-required"
             defaultValue={product.images}
+            value={images}
             disabled
-           value={file.name}
+          onChange={(e) => {
+            setImages(file.name);}}
+          
           />
-          <label htmlFor="icon-button-file">
+           <label htmlFor="icon-button-file">
             <Input
               accept="image/*"
               id="icon-button-file"
@@ -180,7 +200,18 @@ export default function EditProduct(props) {
                 alt="Image_logo"
               />
             </IconButton>
-          </label>
+            {file && (
+          <IconButton
+            name="Delete"
+            aria-label="delete"
+            size="large"
+            onClick={cancelImage}
+          >
+            <RemoveCircleOutlineIcon fontSize="inherit" />
+          </IconButton>
+        )}
+
+          </label> 
          
 
           <Box>
