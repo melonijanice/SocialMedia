@@ -119,7 +119,11 @@ const PostCreate = (e) => {
             aria-label="upload picture"
             component="span"
           >
-            <PhotoCamera />
+                <img
+                      style={{width:"30px"}}
+                        src="/camera.png"
+                        alt="Image_logo"
+                      />
           </IconButton>
         </label>
         <span>{file.name}</span>

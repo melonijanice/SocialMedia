@@ -28,13 +28,12 @@ const useStyles = makeStyles((theme) => ({
   abRoot: {
     background: "linear-gradient(45deg, #383633 30%, #6F6B66 90%)",
   },
-  
   link: {
     textDecoration: "none",
     color: "white",
     fontSize: "20px",
-    marginLeft: theme.spacing(5),
-    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     "&:hover": {
       color: "blue",
       borderBottom: "1px solid white",
@@ -44,9 +43,7 @@ const useStyles = makeStyles((theme) => ({
   BrandLink: {
     textDecoration: "none",
     color: "white",
-    fontSize: "40px",
-    marginLeft: theme.spacing(5),
-    marginRight: theme.spacing(2),
+    fontSize: "20px",
     "&:hover": {
       color: "white",
       textDecoration: "none"
@@ -63,8 +60,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   Image: {
-    height: "50px",
-    width: "50px",
+    width: "100px",
   },
 }));
 
@@ -132,7 +128,7 @@ function Navbar() {
             alt="Image_logo"
           />
           <Link to="/admin/home" className={classes.BrandLink}>
-          A2Z
+          Canvas
                 </Link>
           
         </Typography>
@@ -147,11 +143,23 @@ function Navbar() {
               Home
             </Link>
              */}
-               <Link to="/user/home" className={classes.link}><HomeIcon fontSize="inherit"/></Link>
-               <Link to="/user/inbox/All" className={classes.link}> <MailOutlineIcon fontSize="inherit"/></Link>
+               <Link to="/user/home" className={classes.link}>  <img
+                      style={{width:"30px"}}
+                        src="/home.png"
+                        alt="Image_logo"
+                      /></Link>
+               <Link to="/user/inbox/All" className={classes.link}>  <img
+                      style={{width:"30px"}}
+                        src="/message.png"
+                        alt="Image_logo"
+                      /></Link>
 
  
-               <Link to="/user/marketplace" className={classes.link}> <StorefrontIcon fontSize="inherit"/></Link>
+               <Link to="/user/marketplace" className={classes.link}><img
+                      style={{width:"30px"}}
+                        src="/market.png"
+                        alt="Image_logo"
+                      /></Link>
                
               
 

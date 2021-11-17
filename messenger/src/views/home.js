@@ -119,7 +119,12 @@ export default function Home() {
                       size="large"
                       onClick={followHandler}
                     >
-                      <GroupAddIcon fontSize="inherit" sx={{ color: "blue" }}/>
+                         <img
+                   id={user._id}
+                      style={{width:"30px"}}
+                        src="/follow.png"
+                        alt="Image_logo"
+                      />
                     </IconButton>
                   </Typography>
                 </Grid>
