@@ -131,12 +131,14 @@ const PostDisplay = (props) => {
                   aria-label="edit"
                   size="large"
                 >
-                  <EditIcon
-                    id={element._id}
-                    name="Edit"
-                    fontSize="inherit"
-                    onClick={editHandler}
-                  />
+
+                  <img
+                   id={element._id}
+                      style={{width:"30px"}}
+                        src="/edit.png"
+                        alt="Image_logo"
+                      />
+
                 </IconButton>
                 <IconButton
                   id={element._id}
@@ -145,11 +147,14 @@ const PostDisplay = (props) => {
                   size="large"
                   onClick={deleteHandler}
                 >
-                  <DeleteIcon
-                    id={element._id}
-                    fontSize="inherit"
-                    onClick={deleteHandler}
-                  />
+
+                   <img
+                   id={element._id}
+                      style={{width:"30px"}}
+                        src="/delete.jpeg"
+                        alt="Image_logo"
+                      />
+
                 </IconButton>
               </div>
             )}
