@@ -11,7 +11,7 @@ module.exports.createComment = (request, response) => {
 
 module.exports.getComments = (request, response) => {
   CommentManager.find({})
-    // .populate("commentedBy")
+
     .populate("commentedBy")
     .populate("commentedOn")
     .populate("likedBy")

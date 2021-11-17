@@ -31,6 +31,7 @@ const RepliesToComments = (props) => {
       repliedOn: props.commentId,
       repliedBy: user.user_id,
     };
+
     console.log("comment id", props.commentId);
     console.log(newReply);
     axios
@@ -40,6 +41,7 @@ const RepliesToComments = (props) => {
       .then((res) => {
         console.log(res);
         setSuccessfulDeleteBoolean(!successfulDeleteBoolen);
+        props.onSubmitProp("");
       })
       .catch((err) => {
         console.log(err.response.data.errors);

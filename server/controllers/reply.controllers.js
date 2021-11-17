@@ -20,7 +20,7 @@ module.exports.getReplies = (request, response) => {
 module.exports.getRepliesById = (request, response) => {
   console.log(request.params.id);
   ReplyManager.find({ repliedOn: request.params.id })
-    // .populate("commentedBy")
+
     .populate("repliedOn")
     .populate("repliedBy")
     .populate("likedBy")

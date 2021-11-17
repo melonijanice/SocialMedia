@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, navigate } from "@reach/router";
+import Link from "@mui/material/Link";
 // import ReactImageMagnify from "react-image-magnify";
 import RepliesToComments from "./RepliesToComments";
 const Comment = (props) => {
   const [comments, setComments] = useState([]);
+  const [reply, setReply] = useState("");
   const [newCommentLoaded, setNewCommentLoaded] = useState(
     props.onCommentCreationProp
   );
@@ -19,6 +20,9 @@ const Comment = (props) => {
       })
       .catch((err) => console.log(err));
   }, []);
+  const showReplies = (e) => {
+    setReply(e.target.id);
+  };
 
   return (
     <>
@@ -52,10 +56,23 @@ const Comment = (props) => {
                   <>
                     <p class="card-text">{element.commentBody}</p>{" "}
                     <p>commented by {element.commentedBy.firstName}.</p>
-                    <p>
-                      {" "}
-                      <RepliesToComments commentId={element._id} />
-                    </p>
+                    <Link
+                      component="button"
+                      variant="body2"
+                      id={element._id}
+                      onClick={showReplies}
+                    >
+                      reply
+                    </Link>
+                    {element._id === reply && (
+                      <p>
+                        {" "}
+                        <RepliesToComments
+                          commentId={element._id}
+                          onSubmitProp={setReply}
+                        />
+                      </p>
+                    )}
                   </>
                 ))}
                 {/* <p>{props.onCommentCreationProp.commentBody}</p>

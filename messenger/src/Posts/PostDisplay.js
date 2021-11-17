@@ -74,7 +74,7 @@ const PostDisplay = (props) => {
 
   return (
     <>
-      {posts.map((element, index) => (
+      {posts.map((element) => (
         <Paper
           elevation={7}
           sx={{

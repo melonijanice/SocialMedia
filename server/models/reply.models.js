@@ -7,7 +7,7 @@ const ReplySchema = new mongoose.Schema(
   {
     replyBody: {
       type: String,
-      required: [true, "Message is required"],
+      required: [true, "Reply is required"],
     },
     repliedOn: {
       type: Schema.Types.ObjectId,

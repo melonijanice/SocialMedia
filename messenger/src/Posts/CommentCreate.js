@@ -48,6 +48,7 @@ const CommentCreate = (props) => {
               setCommentBody(e.target.value);
             }}
           />
+
           <button
             className="btn btn-primary"
             style={{ marginLeft: "8px" }}

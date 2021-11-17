@@ -6,7 +6,7 @@ const CommentSchema = new mongoose.Schema(
   {
     commentBody: {
       type: String,
-      required: [true, "Message is required"],
+      required: [true, "Comment is required"],
     },
     commentedOn: {
       type: Schema.Types.ObjectId,

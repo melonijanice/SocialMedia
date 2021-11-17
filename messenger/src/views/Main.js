@@ -13,7 +13,7 @@ import Home from "./home";
 
 import CreateProduct from "../ManageProducts/createProduct";
 import EditProduct from "../ManageProducts/editProduct";
-import RepliesToComments from "../Posts/RepliesToComments";
+// import RepliesToComments from "../Posts/RepliesToComments";
 
 export default function Marketplace() {
   const [isLoggedin, setLoggedin] = useState(false);
@@ -50,7 +50,6 @@ export default function Marketplace() {
             {" "}
           </CreateProduct>
           <EditProduct path="/user/marketplace/editProduct/:id"> </EditProduct>
-          <RepliesToComments path="/replys"></RepliesToComments>
         </Router>
       </UserContext.Provider>
     </div>
