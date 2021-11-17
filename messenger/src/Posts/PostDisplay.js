@@ -8,10 +8,11 @@ import PostEdit from "./EditPost";
 import CardMedia from "@mui/material/CardMedia";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 
-// import { Link, navigate } from "@reach/router";
+import { Link, navigate } from "@reach/router";
 // import ReactImageMagnify from "react-image-magnify";
-/* import CommentCreate from "./CommentCreate";
-import CommentDisplay from "./CommentDisplay"; */
+import CommentCreate from "./CommentCreate";
+import CommentDisplay from "./CommentDisplay";
+import RepliesToComments from "./RepliesToComments";
 
 const PostDisplay = (props) => {
   const [posts, setPosts] = useState([]);
@@ -19,12 +20,12 @@ const PostDisplay = (props) => {
   const [elementMode, setElementMode] = useState("");
   const [deleteFlag, setdeleteFlag] = useState(false);
   const [user, setLoggedInUser] = useState("");
-  const [liked, setLiked] = useState(false);
-
   useEffect(() => {
     const LoggedInUser = JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
-    
+    console.log("new post", props.newPost);
+
+  const [liked, setLiked] = useState(false);
     axios
       .get(`http://localhost:8000/api/posts/follower/${LoggedInUser.user_id}`, {
         withCredentials: true,
@@ -34,7 +35,11 @@ const PostDisplay = (props) => {
         setPosts(res.data);
       })
       .catch((err) => console.log(err));
+
+ 
+
   }, [newCommentLoaded, deleteFlag, props.newPost, liked]);
+
   const setNewCommentHandler = (newComment) => {
  
     setNewCommentLoaded(newComment);
@@ -77,6 +82,8 @@ const PostDisplay = (props) => {
   const editHandler = (event) => {
     event.preventDefault();
 
+    console.log("Edit", event.target.id);
+
 
     setElementMode(event.target.id);
     //navigate(`/admin/${item}/EditAuthor`);
@@ -100,9 +107,17 @@ const PostDisplay = (props) => {
     } else {
       setElementMode("");
 
+//       console.log("new data", updatedPost);
+//       let filteredPosts = posts.filter((post) => post._id !== updatedPost._id);
+//       console.log(filteredPosts);
+//       filteredPosts = [updatedPost, ...filteredPosts];
+//       console.log(filteredPosts);
+
+
       let filteredPosts = posts.filter((post) => post._id !== updatedPost._id);
 
       filteredPosts = [updatedPost, ...filteredPosts];
+
 
       setPosts(filteredPosts);
     }
@@ -110,7 +125,10 @@ const PostDisplay = (props) => {
 
   return (
     <>
+
+
       {posts.map((element, index) => (
+
         <Paper
           elevation={7}
           sx={{
@@ -127,10 +145,15 @@ const PostDisplay = (props) => {
                 <IconButton
                   id={element._id}
                   name="Edit"
-                 
+
+                  onClick={editHandler}
                   aria-label="edit"
                   size="large"
                 >
+                 
+
+                 
+                  
                   <img
                    id={element._id}
                    onClick={editHandler}
@@ -138,14 +161,19 @@ const PostDisplay = (props) => {
                         src="/edit.png"
                         alt="Image_logo"
                       />
+
                 </IconButton>
                 <IconButton
                   id={element._id}
                   name="Delete"
                   aria-label="delete"
                   size="large"
-                  
+
+                  onClick={deleteHandler}
                 >
+                 
+                  
+                
                    <img
                    id={element._id}
                    onClick={deleteHandler}
@@ -153,6 +181,7 @@ const PostDisplay = (props) => {
                         src="/delete.jpeg"
                         alt="Image_logo"
                       />
+
                 </IconButton>
               </div>
             )}
@@ -164,14 +193,16 @@ const PostDisplay = (props) => {
                 <span style={{ color: "grey" }}>posted on their canvas</span>
               </p>
               <p class="card-text">{element.postBody}</p>
+
              
               {element.Image.length!==0 && (
-                <CardMedia
+   <CardMedia
                   sx={{ maxWidth: "300px" }}
                   component="img"
                   image={`http://localhost:8000/Images/${element.Image}`}
                 />
               )}
+
 
               <IconButton id={element._id}>
                 {element.likedBy.filter(
@@ -191,6 +222,7 @@ const PostDisplay = (props) => {
                   />
                 )}
               </IconButton>
+
             </div>
             {elementMode === element._id && (
               <PostEdit
@@ -199,16 +231,16 @@ const PostDisplay = (props) => {
                 onSubmitProp={onEditDataHandler}
               />
             )}
-            {/*    <CommentCreate
-                    postId={element._id}
-                    onSubmitProp={setNewCommentHandler}
-                  ></CommentCreate>
-                  <CommentDisplay
-                    onCommentCreationProp={newCommentLoaded}
-                    postId={element._id}
-                  ></CommentDisplay> */}
 
-            {/* <input type="text"></input> */}
+            <CommentCreate
+              postId={element._id}
+              onSubmitProp={setNewCommentHandler}
+            ></CommentCreate>
+            <CommentDisplay
+              onCommentCreationProp={newCommentLoaded}
+              postId={element._id}
+            ></CommentDisplay>
+
           </div>
         </Paper>
       ))}

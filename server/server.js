@@ -19,9 +19,9 @@ app.use(
 );
 
 //connect to DB
-const URI = process.env.MONGODB_URL
+const URI = process.env.MONGODB_URL;
 // require("./config/mongoose.config")(URI); // Mehrdad connecting to DB using URI
-require("./config/mongoose.config")
+require("./config/mongoose.config");
 
 //configure socket
 const socket = require("socket.io");
@@ -54,30 +54,29 @@ app.post('/upload',(req,res)=>
 const multer = require("multer");
 const path = require("path");
 const imageStorage = multer.diskStorage({
-  // Destination to store image     
-  destination: `${__dirname}/Images/`, 
+  // Destination to store image
+  destination: `${__dirname}/Images/`,
   filename: (req, file, cb) => {
     /*cb(null, file.originalname.replace(path.extname(file.originalname),"") + '_' + Date.now() 
        + path.extname(file.originalname))*/
-       cb(null, file.originalname)
-      // file.fieldname is name of the field (image)
-      // path.extname get the uploaded file extension
-}
+    cb(null, file.originalname);
+    // file.fieldname is name of the field (image)
+    // path.extname get the uploaded file extension
+  },
 });
 const upload = multer({
   storage: imageStorage,
   limits: {
-    fileSize: 1000000 // 1000000 Bytes = 1 MB
+    fileSize: 1000000, // 1000000 Bytes = 1 MB
   },
   fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) { 
-       // upload only png and jpg format
-       return cb(new Error('Please upload a Image'))
-     }
-   cb(undefined, true)
-}
-}) 
-
+    if (!file.originalname.match(/\.(png|jpg|jpeg)$/)) {
+      // upload only png and jpg format
+      return cb(new Error("Please upload a Image"));
+    }
+    cb(undefined, true);
+  },
+});
 
 /* var upload = multer({ dest: `${__dirname}/../client/public/uploads/` },
 ); */
@@ -85,21 +84,21 @@ const upload = multer({
 app.post("/api/upload", upload.single("file"), async (req, res) => {
   try {
     if (req.file) {
-      console.log("File Uploaded",req.file.filename)
+      console.log("File Uploaded", req.file.filename);
       res.json({
-        fileName:req.file.filename,
+        fileName: req.file.filename,
         status: true,
         message: "File Uploaded!",
       });
     } else {
-      console.log("File Not uploaded",req)
+      console.log("File Not uploaded", req);
       res.status(400).json({
         status: false,
         data: "File Not Found :(",
       });
     }
   } catch (err) {
-    console.log("Error",err)
+    console.log("Error", err);
     res.status(500).json(err);
   }
 });
@@ -110,40 +109,40 @@ app.post("/api/remove", async (req, res) => {
   let resultHandler = function (err) {
     if (err) {
       console.log(err);
-      if (err.code === 'ENOENT') {
+      if (err.code === "ENOENT") {
         res.json({
           status: true,
           message: "File did not exist, so no need to unlink!",
         });
+      } else {
+        res.status(400).json({
+          status: false,
+          data: "Delete Error",
+        });
       }
-      else{
-      res.status(400).json({
-        status: false,
-        data: "Delete Error",
-      });
-    }
     } else {
       res.json({
         status: true,
         message: "File Deleted!",
       });
     }
-}
+  };
 
-fs.unlink(`${__dirname}/Images/${req.body.fileName}`, resultHandler);
+  fs.unlink(`${__dirname}/Images/${req.body.fileName}`, resultHandler);
 });
 
-app.use(express.static('public'));  
-app.use('/Images', express.static('Images')); 
+app.use(express.static("public"));
+app.use("/Images", express.static("Images"));
 //routes
 require("./routes/user.routes")(app);
-require("./routes/message.routes")(app); 
+require("./routes/message.routes")(app);
 
 require("./routes/products.routes")(app);
 
 require("./routes/post.routes")(app);
-require('./routes/payment.routes')(app)
-
+require("./routes/payment.routes")(app);
+require("./routes/comment.routes")(app);
+require("./routes/reply.routes")(app);
 
 //listen on port
 const port = process.env.MY_PORT || 8000;
@@ -176,6 +175,6 @@ io.on("connection", (socket) => {
   socket.on("sending_message", (data) => {
     console.log("new message:data is here:", data);
     console.log("socket id for Broadcast messages: " + socket.id);
-    socket.broadcast.emit("message_"+data.toWhom, data);
+    socket.broadcast.emit("message_" + data.toWhom, data);
   });
 });
