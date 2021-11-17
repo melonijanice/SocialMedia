@@ -67,7 +67,7 @@ console.log(localStorage.getItem("userData"));
           withCredentials: true,
         })
         .then((res) => {
-          console.log("this user data", res.data.following)
+          console.log("this user data", res.data)
           console.log(res.data);
           //Filter other than Varsha for testing- assuming she isnt follower
           const filteredNonFollowers = res.data.following

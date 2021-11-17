@@ -117,7 +117,7 @@ export default function Home() {
                       name="Delete"
                       aria-label="delete"
                       size="large"
-                      onClick={followHandler}
+                      
                     >
                       <img id={user._id}
                       onClick={followHandler}
