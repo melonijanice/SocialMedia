@@ -137,7 +137,7 @@ export default function Product(props) {
 
 
     return (
-        <Card sx={{ maxWidth:345  }}>
+        <Card sx={{ maxWidth:200  }}>
             <CardHeader
                 avatar={
                 <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -159,7 +159,7 @@ export default function Product(props) {
             <CardMedia
                 component="img"
                 height="194"
-                image={product.images[0]} //upload images by multer
+                image={`http://localhost:8000/Images/${product.images[0]}`} //upload images by multer
                 alt="img not found"
             />
             
