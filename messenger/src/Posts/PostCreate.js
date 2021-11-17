@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import PostDisplay from "../Posts/PostDisplay";
 import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { styled } from "@mui/material/styles";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
