@@ -20,12 +20,12 @@ const PostDisplay = (props) => {
   const [elementMode, setElementMode] = useState("");
   const [deleteFlag, setdeleteFlag] = useState(false);
   const [user, setLoggedInUser] = useState("");
+  const [liked, setLiked] = useState(false);
   useEffect(() => {
     const LoggedInUser = JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
     console.log("new post", props.newPost);
 
-  const [liked, setLiked] = useState(false);
     axios
       .get(`http://localhost:8000/api/posts/follower/${LoggedInUser.user_id}`, {
         withCredentials: true,
@@ -35,13 +35,9 @@ const PostDisplay = (props) => {
         setPosts(res.data);
       })
       .catch((err) => console.log(err));
-
- 
-
   }, [newCommentLoaded, deleteFlag, props.newPost, liked]);
 
   const setNewCommentHandler = (newComment) => {
- 
     setNewCommentLoaded(newComment);
   };
 
@@ -84,7 +80,6 @@ const PostDisplay = (props) => {
 
     console.log("Edit", event.target.id);
 
-
     setElementMode(event.target.id);
     //navigate(`/admin/${item}/EditAuthor`);
   };
@@ -107,17 +102,15 @@ const PostDisplay = (props) => {
     } else {
       setElementMode("");
 
-//       console.log("new data", updatedPost);
-//       let filteredPosts = posts.filter((post) => post._id !== updatedPost._id);
-//       console.log(filteredPosts);
-//       filteredPosts = [updatedPost, ...filteredPosts];
-//       console.log(filteredPosts);
-
+      //       console.log("new data", updatedPost);
+      //       let filteredPosts = posts.filter((post) => post._id !== updatedPost._id);
+      //       console.log(filteredPosts);
+      //       filteredPosts = [updatedPost, ...filteredPosts];
+      //       console.log(filteredPosts);
 
       let filteredPosts = posts.filter((post) => post._id !== updatedPost._id);
 
       filteredPosts = [updatedPost, ...filteredPosts];
-
 
       setPosts(filteredPosts);
     }
@@ -125,10 +118,7 @@ const PostDisplay = (props) => {
 
   return (
     <>
-
-
       {posts.map((element, index) => (
-
         <Paper
           elevation={7}
           sx={{
@@ -145,43 +135,32 @@ const PostDisplay = (props) => {
                 <IconButton
                   id={element._id}
                   name="Edit"
-
                   onClick={editHandler}
                   aria-label="edit"
                   size="large"
                 >
-                 
-
-                 
-                  
                   <img
-                   id={element._id}
-                   onClick={editHandler}
-                      style={{width:"30px"}}
-                        src="/edit.png"
-                        alt="Image_logo"
-                      />
-
+                    id={element._id}
+                    onClick={editHandler}
+                    style={{ width: "30px" }}
+                    src="/edit.png"
+                    alt="Image_logo"
+                  />
                 </IconButton>
                 <IconButton
                   id={element._id}
                   name="Delete"
                   aria-label="delete"
                   size="large"
-
                   onClick={deleteHandler}
                 >
-                 
-                  
-                
-                   <img
-                   id={element._id}
-                   onClick={deleteHandler}
-                      style={{width:"30px"}}
-                        src="/delete.jpeg"
-                        alt="Image_logo"
-                      />
-
+                  <img
+                    id={element._id}
+                    onClick={deleteHandler}
+                    style={{ width: "30px" }}
+                    src="/delete.jpeg"
+                    alt="Image_logo"
+                  />
                 </IconButton>
               </div>
             )}
@@ -194,15 +173,13 @@ const PostDisplay = (props) => {
               </p>
               <p class="card-text">{element.postBody}</p>
 
-             
-              {element.Image.length!==0 && (
-   <CardMedia
+              {element.Image.length !== 0 && (
+                <CardMedia
                   sx={{ maxWidth: "300px" }}
                   component="img"
                   image={`http://localhost:8000/Images/${element.Image}`}
                 />
               )}
-
 
               <IconButton id={element._id}>
                 {element.likedBy.filter(
@@ -222,7 +199,6 @@ const PostDisplay = (props) => {
                   />
                 )}
               </IconButton>
-
             </div>
             {elementMode === element._id && (
               <PostEdit
@@ -240,7 +216,6 @@ const PostDisplay = (props) => {
               onCommentCreationProp={newCommentLoaded}
               postId={element._id}
             ></CommentDisplay>
-
           </div>
         </Paper>
       ))}
