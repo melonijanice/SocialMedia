@@ -127,12 +127,13 @@ const PostDisplay = (props) => {
                 <IconButton
                   id={element._id}
                   name="Edit"
-                  onClick={editHandler}
+                 
                   aria-label="edit"
                   size="large"
                 >
                   <img
                    id={element._id}
+                   onClick={editHandler}
                       style={{width:"30px"}}
                         src="/edit.png"
                         alt="Image_logo"
@@ -143,10 +144,11 @@ const PostDisplay = (props) => {
                   name="Delete"
                   aria-label="delete"
                   size="large"
-                  onClick={deleteHandler}
+                  
                 >
                    <img
                    id={element._id}
+                   onClick={deleteHandler}
                       style={{width:"30px"}}
                         src="/delete.jpeg"
                         alt="Image_logo"
