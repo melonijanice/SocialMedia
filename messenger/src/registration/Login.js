@@ -13,27 +13,23 @@ const initialState = {
   errors: { email: "", password: "" },
 };
 function reducer(state, action) {
-
   switch (action.type) {
-    
-    case 'emailError':
-
+    case "emailError":
       return {
         ...state,
-        "errors": {...state.errors,"email":action.payload},
+        errors: { ...state.errors, email: action.payload },
       };
-      case 'passwordError':
-        return {
-          ...state,
-          "errors": {...state.errors,"password":action.payload},
-        };
+    case "passwordError":
+      return {
+        ...state,
+        errors: { ...state.errors, password: action.payload },
+      };
     default:
       return {
         ...state,
         [action.type]: action.payload,
       };
   }
- 
 }
 
 export default function Login(props) {
@@ -42,32 +38,30 @@ export default function Login(props) {
   function handleChange(e) {
     const { id, value } = e.target;
     if (id === "email") {
-      if (value === "") 
-      {dispatch({
-        type: "emailError",
-        payload: "E-mail should be valid",
-      });}
-      else{
+      if (value === "") {
+        dispatch({
+          type: "emailError",
+          payload: "E-mail should be valid",
+        });
+      } else {
         dispatch({
           type: "emailError",
           payload: "",
-        })
+        });
       }
-      
     }
     if (id === "password") {
-      if (value === "") 
-      {dispatch({
-        type: "passwordError",
-        payload:"password should be valid",
-      });}
-      else{
+      if (value === "") {
+        dispatch({
+          type: "passwordError",
+          payload: "password should be valid",
+        });
+      } else {
         dispatch({
           type: "passwordError",
           payload: "",
-        })
+        });
       }
-      
     }
     dispatch({
       type: id,
@@ -98,17 +92,14 @@ export default function Login(props) {
       })
       .catch((err) => {
         console.log(err.response);
-        if(err.response.data.hasOwnProperty("errors"))
-        {
+        if (err.response.data.hasOwnProperty("errors")) {
           dispatch({
-          type: "errors",
-          payload: err.response.data.errors,
-        }); 
-        //setErrors(err.response.data.errors);
-        }
-        else
-        {
-          setErrors("Invalid Login Attempt")
+            type: "errors",
+            payload: err.response.data.errors,
+          });
+          //setErrors(err.response.data.errors);
+        } else {
+          setErrors("Invalid Login Attempt");
         }
         /* dispatch({
           type: "errors",
@@ -131,16 +122,14 @@ export default function Login(props) {
         marginLeft: { md: 25, lg: 50 },
         marginTop: "30px",
         minWidth: { md: 350 },
-        "& .MuiTextField-root": { m: 1, width: "40ch" }
+        "& .MuiTextField-root": { m: 1, width: "40ch" },
       }}
       noValidate
       autoComplete="off"
     >
       <div className="registerForm">
         <div>Welcome to Dojo Public Library, and happy reading!</div>
-        <p className="error-text">
-          {errors}
-        </p>
+        <p className="error-text">{errors}</p>
         <p className="error-text">
           {state.errors !== "" && state.errors.email}
         </p>
@@ -180,7 +169,7 @@ export default function Login(props) {
             onChange={handleChange}
           />
         </div>
-        <div style={{textAlign:"center"}}>
+        <div style={{ textAlign: "center" }}>
           <Button onClick={onSubmitHandler} variant="contained">
             Login
           </Button>

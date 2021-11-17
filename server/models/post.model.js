@@ -7,7 +7,7 @@ const PostSchema = new mongoose.Schema(
       type: String,
       required: [true, "Message is required"],
     },
-    Image: { type: String },
+    Image: { type: Array },
     postedBy: {
       type: Schema.Types.ObjectId,
       ref: UserManager,
@@ -17,15 +17,13 @@ const PostSchema = new mongoose.Schema(
         type: Schema.Types.ObjectId,
         ref: UserManager,
       },
-      
     ],
     sharedBy: [
-        {
-          type: Schema.Types.ObjectId,
-          ref: UserManager,
-        },
-        
-      ],
+      {
+        type: Schema.Types.ObjectId,
+        ref: UserManager,
+      },
+    ],
   },
   { timestamps: true }
 );
