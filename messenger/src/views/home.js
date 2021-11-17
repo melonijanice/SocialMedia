@@ -15,6 +15,7 @@ export default function Home() {
   console.log(localStorage.getItem("userData"));
   const [User, setLoggedInUser] = useState({});
   const [following, setFollowing] = useState([]);
+  const[Flag,setFlag]=useState(false)
 
   useEffect(() => {
     const LoggedInUser = localStorage.user ? JSON.parse(localStorage.user) : "";
@@ -31,7 +32,7 @@ export default function Home() {
       .catch((err) => {
         navigate(`/user/login`);
       });
-  }, []);
+  }, [Flag]);
   const followHandler = (e) => {
     e.preventDefault();
     console.log(e.target.id);
@@ -49,6 +50,7 @@ export default function Home() {
         );
         console.log(filterFollowers);
         setFollowing(filterFollowers);
+        setFlag(!Flag)
       })
       .catch((err) => {
         navigate(`/user/login`);

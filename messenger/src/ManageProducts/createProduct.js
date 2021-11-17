@@ -18,8 +18,14 @@ export default function CreateProduct() {
     const [images, setImages] = useState([])
     const [owner, setOwner] = useState("")
     const [errors, setErrors] = useState({})
+    const [productsRenderFlag, setProductsRenderFlag] = useState(false)
     
     
+
+    useEffect( ()=>{
+      
+
+    },[productsRenderFlag])
 
     const submitHandler = (e)=>{
         e.preventDefault();
@@ -44,6 +50,7 @@ export default function CreateProduct() {
         })
         .then(res =>{
             console.log("res.data.message after creating product", res.data.message)
+            setProductsRenderFlag(!productsRenderFlag)
             navigate("/user/marketplace")
         })
         .catch( error =>{
