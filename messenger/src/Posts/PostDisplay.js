@@ -24,19 +24,19 @@ const PostDisplay = (props) => {
   useEffect(() => {
     const LoggedInUser = JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
-    console.log("new post", props.newPost);
+    
     axios
       .get(`http://localhost:8000/api/posts/follower/${LoggedInUser.user_id}`, {
         withCredentials: true,
       })
       .then((res) => {
+        console.log(res.data);
         setPosts(res.data);
       })
       .catch((err) => console.log(err));
   }, [newCommentLoaded, deleteFlag, props.newPost, liked]);
   const setNewCommentHandler = (newComment) => {
-    console.log("new comment ");
-    console.log(newComment);
+ 
     setNewCommentLoaded(newComment);
   };
 
@@ -76,7 +76,7 @@ const PostDisplay = (props) => {
 
   const editHandler = (event) => {
     event.preventDefault();
-    console.log("Edit", event.target.id);
+
 
     setElementMode(event.target.id);
     //navigate(`/admin/${item}/EditAuthor`);
@@ -99,11 +99,11 @@ const PostDisplay = (props) => {
       setElementMode("");
     } else {
       setElementMode("");
-      console.log("new data", updatedPost);
+
       let filteredPosts = posts.filter((post) => post._id !== updatedPost._id);
-      console.log(filteredPosts);
+
       filteredPosts = [updatedPost, ...filteredPosts];
-      console.log(filteredPosts);
+
       setPosts(filteredPosts);
     }
   };
@@ -164,7 +164,8 @@ const PostDisplay = (props) => {
                 <span style={{ color: "grey" }}>posted on their canvas</span>
               </p>
               <p class="card-text">{element.postBody}</p>
-              {element.Image && (
+             
+              {element.Image.length!==0 && (
                 <CardMedia
                   sx={{ maxWidth: "300px" }}
                   component="img"
