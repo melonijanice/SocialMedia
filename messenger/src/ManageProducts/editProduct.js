@@ -112,6 +112,7 @@ export default function EditProduct(props) {
 
   return (
     <div>
+            <Navbar />
       {loaded && (
         <Box
           component="form"

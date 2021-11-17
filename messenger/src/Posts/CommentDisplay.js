@@ -54,6 +54,7 @@ const Comment = (props) => {
               >
                 {comments.map((element, index) => (
                   <>
+                  
                     <p class="card-text">{element.commentBody}</p>{" "}
                     <p>commented by {element.commentedBy.firstName}.</p>
                     <Link
