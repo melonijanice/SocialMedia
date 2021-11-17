@@ -5,7 +5,7 @@ import { navigate } from "@reach/router";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-import GroupAddIcon from '@mui/icons-material/GroupAdd';
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
 import Box from "@mui/material/Box";
 import PostCreate from "../Posts/PostCreate";
 import IconButton from "@mui/material/IconButton";
@@ -15,9 +15,10 @@ export default function Home() {
   console.log(localStorage.getItem("userData"));
   const [User, setLoggedInUser] = useState({});
   const [following, setFollowing] = useState([]);
+  const[Flag,setFlag]=useState(false)
 
   useEffect(() => {
-    const LoggedInUser = localStorage.user? JSON.parse(localStorage.user):"";
+    const LoggedInUser = localStorage.user ? JSON.parse(localStorage.user) : "";
     console.log(LoggedInUser);
     setLoggedInUser(LoggedInUser);
     axios
@@ -31,11 +32,11 @@ export default function Home() {
       .catch((err) => {
         navigate(`/user/login`);
       });
-  }, []);
+  }, [Flag]);
   const followHandler = (e) => {
     e.preventDefault();
     console.log(e.target.id);
-    axios
+     axios
       .put(
         `http://localhost:8000/profile/${e.target.id}/${User.user_id}/follow`,
         {
@@ -49,15 +50,16 @@ export default function Home() {
         );
         console.log(filterFollowers);
         setFollowing(filterFollowers);
+        setFlag(!Flag)
       })
       .catch((err) => {
         navigate(`/user/login`);
-      });
+      }); 
   };
   return (
     <div>
       <div>
-       <Navbar />
+        <Navbar />
       </div>
       <Box
         elevation={7}
@@ -103,7 +105,7 @@ export default function Home() {
                     {user.firstName + " " + user.lastName}
                   </Typography>
                   <Typography>
-             {/*        <Button
+                    {/*        <Button
                       id={user._id}
                       onClick={followHandler}
                       variant="contained"
@@ -117,9 +119,14 @@ export default function Home() {
                       name="Delete"
                       aria-label="delete"
                       size="large"
-                      onClick={followHandler}
+                      
                     >
-                      <GroupAddIcon fontSize="inherit" sx={{ color: "blue" }}/>
+                      <img id={user._id}
+                      onClick={followHandler}
+                      style={{width:"30px"}}
+                        src="/add_friend.png"
+                        alt="Image_logo"
+                      />
                     </IconButton>
                   </Typography>
                 </Grid>

@@ -6,6 +6,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import PostEdit from "./EditPost";
 import CardMedia from "@mui/material/CardMedia";
+import FavoriteIcon from "@mui/icons-material/Favorite";
 
 import { Link, navigate } from "@reach/router";
 // import ReactImageMagnify from "react-image-magnify";
@@ -23,24 +24,66 @@ const PostDisplay = (props) => {
     const LoggedInUser = JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
     console.log("new post", props.newPost);
+
+  const [liked, setLiked] = useState(false);
     axios
       .get(`http://localhost:8000/api/posts/follower/${LoggedInUser.user_id}`, {
         withCredentials: true,
       })
       .then((res) => {
+        console.log(res.data);
         setPosts(res.data);
       })
       .catch((err) => console.log(err));
-  }, [newCommentLoaded, deleteFlag, props.newPost]);
+
+ 
+
+  }, [newCommentLoaded, deleteFlag, props.newPost, liked]);
+
   const setNewCommentHandler = (newComment) => {
-    console.log("new comment ");
-    console.log(newComment);
+ 
     setNewCommentLoaded(newComment);
+  };
+
+  const likeHandler = (postId) => {
+    const id = user.user_id;
+
+    axios
+      .patch(
+        `http://localhost:8000/api/posts/${postId}/like/${id}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setLiked(!liked);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const unlikeHandler = (postId) => {
+    const id = user.user_id;
+
+    axios
+      .patch(
+        `http://localhost:8000/api/posts/${postId}/unlike/${id}`,
+        {},
+        {
+          withCredentials: true,
+        }
+      )
+      .then((res) => {
+        setLiked(!liked);
+      })
+      .catch((err) => console.log(err.response));
   };
 
   const editHandler = (event) => {
     event.preventDefault();
+
     console.log("Edit", event.target.id);
+
 
     setElementMode(event.target.id);
     //navigate(`/admin/${item}/EditAuthor`);
@@ -63,18 +106,29 @@ const PostDisplay = (props) => {
       setElementMode("");
     } else {
       setElementMode("");
-      console.log("new data", updatedPost);
+
+//       console.log("new data", updatedPost);
+//       let filteredPosts = posts.filter((post) => post._id !== updatedPost._id);
+//       console.log(filteredPosts);
+//       filteredPosts = [updatedPost, ...filteredPosts];
+//       console.log(filteredPosts);
+
+
       let filteredPosts = posts.filter((post) => post._id !== updatedPost._id);
-      console.log(filteredPosts);
+
       filteredPosts = [updatedPost, ...filteredPosts];
-      console.log(filteredPosts);
+
+
       setPosts(filteredPosts);
     }
   };
 
   return (
     <>
-      {posts.map((element) => (
+
+
+      {posts.map((element, index) => (
+
         <Paper
           elevation={7}
           sx={{
@@ -91,29 +145,43 @@ const PostDisplay = (props) => {
                 <IconButton
                   id={element._id}
                   name="Edit"
+
                   onClick={editHandler}
                   aria-label="edit"
                   size="large"
                 >
-                  <EditIcon
-                    id={element._id}
-                    name="Edit"
-                    fontSize="inherit"
-                    onClick={editHandler}
-                  />
+                 
+
+                 
+                  
+                  <img
+                   id={element._id}
+                   onClick={editHandler}
+                      style={{width:"30px"}}
+                        src="/edit.png"
+                        alt="Image_logo"
+                      />
+
                 </IconButton>
                 <IconButton
                   id={element._id}
                   name="Delete"
                   aria-label="delete"
                   size="large"
+
                   onClick={deleteHandler}
                 >
-                  <DeleteIcon
-                    id={element._id}
-                    fontSize="inherit"
-                    onClick={deleteHandler}
-                  />
+                 
+                  
+                
+                   <img
+                   id={element._id}
+                   onClick={deleteHandler}
+                      style={{width:"30px"}}
+                        src="/delete.jpeg"
+                        alt="Image_logo"
+                      />
+
                 </IconButton>
               </div>
             )}
@@ -125,13 +193,36 @@ const PostDisplay = (props) => {
                 <span style={{ color: "grey" }}>posted on their canvas</span>
               </p>
               <p class="card-text">{element.postBody}</p>
-              {element.Image && (
-                <CardMedia
+
+             
+              {element.Image.length!==0 && (
+   <CardMedia
                   sx={{ maxWidth: "300px" }}
                   component="img"
                   image={`http://localhost:8000/Images/${element.Image}`}
                 />
               )}
+
+
+              <IconButton id={element._id}>
+                {element.likedBy.filter(
+                  (likedUser) => likedUser._id === user.user_id
+                ).length > 0 ? (
+                  <FavoriteIcon
+                    id={element._id}
+                    onClick={() => unlikeHandler(element._id)}
+                    sx={{
+                      color: "red",
+                    }}
+                  />
+                ) : (
+                  <FavoriteIcon
+                    id={element._id}
+                    onClick={() => likeHandler(element._id)}
+                  />
+                )}
+              </IconButton>
+
             </div>
             {elementMode === element._id && (
               <PostEdit
@@ -140,6 +231,7 @@ const PostDisplay = (props) => {
                 onSubmitProp={onEditDataHandler}
               />
             )}
+
             <CommentCreate
               postId={element._id}
               onSubmitProp={setNewCommentHandler}
@@ -148,6 +240,7 @@ const PostDisplay = (props) => {
               onCommentCreationProp={newCommentLoaded}
               postId={element._id}
             ></CommentDisplay>
+
           </div>
         </Paper>
       ))}
