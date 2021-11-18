@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import PostEdit from "./EditPost";
 import CardMedia from "@mui/material/CardMedia";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import moment from "moment";
 
 import { Link, navigate } from "@reach/router";
 // import ReactImageMagnify from "react-image-magnify";
@@ -16,8 +17,9 @@ import RepliesToComments from "./RepliesToComments";
 
 const PostDisplay = (props) => {
   const [posts, setPosts] = useState([]);
-  const [newCommentLoaded, setNewCommentLoaded] = useState("");
+  const [newCommentLoaded, setNewCommentLoaded] = useState(false);
   const [newPostsLoaded, setnewPostsLoaded] = useState(false);
+  // const [successfulDeleteBoolen, setSuccessfulDeleteBoolean] = useState(false);
   const [elementMode, setElementMode] = useState("");
   const [deleteFlag, setdeleteFlag] = useState(false);
   const [user, setLoggedInUser] = useState("");
@@ -35,10 +37,9 @@ const PostDisplay = (props) => {
         console.log(res.data);
         setPosts(res.data);
         setnewPostsLoaded(!newPostsLoaded);
-
       })
       .catch((err) => console.log(err));
-  }, [newCommentLoaded, deleteFlag, props.newPost, liked]);
+  }, [deleteFlag, props.newPost, liked]);
 
   const setNewCommentHandler = (newComment) => {
     setNewCommentLoaded(newComment);
@@ -172,7 +173,11 @@ const PostDisplay = (props) => {
                 <span style={{ fontWeight: "bold" }}>
                   {element.postedBy.firstName + " " + element.postedBy.lastName}
                 </span>{" "}
-                <span style={{ color: "grey" }}>posted on their canvas</span>
+                <span style={{ color: "grey" }}>
+                  posted on their canvas on
+                  {" " +
+                    moment(element.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                </span>
               </p>
               <p class="card-text">{element.postBody}</p>
 
@@ -214,9 +219,10 @@ const PostDisplay = (props) => {
             <CommentCreate newPost={newPostsLoaded}
               postId={element._id}
               onSubmitProp={setNewCommentHandler}
+              newPost={newPostsLoaded}
             ></CommentCreate>
             <CommentDisplay
-            newPost={newPostsLoaded}
+              newPost={newPostsLoaded}
               onCommentCreationProp={newCommentLoaded}
               postId={element._id}
             ></CommentDisplay>

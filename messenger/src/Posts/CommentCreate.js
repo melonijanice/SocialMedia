@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, navigate } from "@reach/router";
-
+import Input from "@mui/material/Input";
+import IconButton from "@mui/material/IconButton";
 const CommentCreate = (props) => {
   const [commentBody, setCommentBody] = useState("");
   const [errors, setErrors] = useState({});
@@ -39,9 +40,15 @@ const CommentCreate = (props) => {
     <div className="container">
       <form onSubmit={submitHandler}>
         <div>
-          <label className="form-label">Add Comment:</label>
-          <br></br>
-          <input
+          <Input
+            placeholder="write a comment"
+            sx={{
+              border: "1px solid grey",
+              borderRadius: "5px",
+              minWidth: "400px",
+              minHeight: "55px",
+              background: "#D3D3D3",
+            }}
             type="text"
             value={commentBody}
             onChange={(e) => {
@@ -49,13 +56,14 @@ const CommentCreate = (props) => {
             }}
           />
 
-          <button
-            className="btn btn-primary"
-            style={{ marginLeft: "8px" }}
-            type="submit"
-          >
-            Add Comment
-          </button>
+          <IconButton name="submit" aria-label="edit" size="large">
+            <img
+              onClick={submitHandler}
+              style={{ width: "40px" }}
+              src="/send.jpeg"
+              alt="Image_logo"
+            />
+          </IconButton>
           {errors && errors.commentBody && (
             <p className="error-text">{errors.commentBody.message}</p>
           )}

@@ -17,11 +17,10 @@ export default function EditProduct(props) {
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
-  const [owner_id, setOwner_id] = useState("");
-  const [errors, setErrors] = useState({});
+/*   const [owner_id, setOwner_id] = useState("");
+  const [errors, setErrors] = useState({}); */
   const [loaded, setLoaded] = useState(false);
   const [file, setFile] = useState("");
-
   const Input = styled("input")({
     display: "none",
   });
@@ -112,6 +111,7 @@ export default function EditProduct(props) {
 
   return (
     <div>
+            <Navbar />
       {loaded && (
         <Box
           component="form"
@@ -180,7 +180,6 @@ export default function EditProduct(props) {
             disabled
           onChange={(e) => {
             setImages(file.name);}}
-          
           />
            <label htmlFor="icon-button-file">
             <Input
