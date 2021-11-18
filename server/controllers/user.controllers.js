@@ -37,6 +37,7 @@ module.exports = {
                 {
                   user_id: user._id,
                   email: user.email,
+                  name: user.firstName + " " + user.lastName,
                   firstName: userRecord.firstName,
                   lastName: userRecord.lastName,
                 },
@@ -51,6 +52,8 @@ module.exports = {
                   msg: "successfully Logged In!",
                   userLoggedIn: {
                     name: user.firstName + " " + user.lastName,
+                    firstName: userRecord.firstName,
+                    lastName: userRecord.lastName,
                     user_id: user._id,
                     email: user.email,
                   },
@@ -97,6 +100,8 @@ module.exports = {
                     name: userRecord.firstName + " " + userRecord.lastName,
                     user_id: userRecord._id,
                     email: userRecord.email,
+                    firstName: userRecord.firstName,
+                    lastName: userRecord.lastName,
                   },
                 });
             } else {

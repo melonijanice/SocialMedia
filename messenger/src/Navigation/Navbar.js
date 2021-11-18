@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import HomeIcon from '@mui/icons-material/Home';
+import Avatar from "@mui/material/Avatar";
 
 
 import {
@@ -71,7 +72,7 @@ function Navbar() {
 
   useEffect(() => {
     const LoggedInUser = localStorage.user && JSON.parse(localStorage.user);
-    console.log(LoggedInUser);
+    console.log("logged user",LoggedInUser);
     setLoggedInUser(LoggedInUser);
   }, []);
 
@@ -178,7 +179,11 @@ function Navbar() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {User && User.name}
+                  {User && <Avatar sx={{ bgcolor: "blue" }}>
+                      {User.firstName.charAt(0) +
+                        User.lastName.charAt(0)}
+                    </Avatar>} 
+                  
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
                 <li>
