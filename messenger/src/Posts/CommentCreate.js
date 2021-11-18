@@ -29,6 +29,7 @@ const CommentCreate = (props) => {
       .then((res) => {
         console.log(res);
         props.onSubmitProp(res.data);
+        setCommentBody("")
       })
       .catch((err) => {
         console.log(err.response.data.errors);

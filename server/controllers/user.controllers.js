@@ -37,8 +37,9 @@ module.exports = {
                 {
                   user_id: user._id,
                   email: user.email,
-                  firstName: userRecord.firstName,
-                  lastName: userRecord.lastName,
+                  name: user.firstName + " " + user.lastName,
+                  firstName: user.firstName,
+                  lastName: user.lastName,
                 },
                 process.env.JWT_SECRET
               );
@@ -51,8 +52,11 @@ module.exports = {
                   msg: "successfully Logged In!",
                   userLoggedIn: {
                     name: user.firstName + " " + user.lastName,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
                     user_id: user._id,
                     email: user.email,
+                    user: user
                   },
                 });
             })
@@ -97,6 +101,12 @@ module.exports = {
                     name: userRecord.firstName + " " + userRecord.lastName,
                     user_id: userRecord._id,
                     email: userRecord.email,
+                    firstName: userRecord.firstName,
+                    lastName: userRecord.lastName,
+                    user: userRecord,
+                    followers: userRecord.followers,
+                    following: userRecord.following,
+                    saved: userRecord.saved
                   },
                 });
             } else {

@@ -22,4 +22,20 @@ module.exports = function (app) {
     authenticate,
     PostController.unlikePost
   );
+
+  app.get(
+    "/api/posts/saved/:userId",
+    authenticate,
+    PostController.getSavedPosts
+  );
+  app.patch(
+    "/api/posts/:id/save/:userId",
+    authenticate,
+    PostController.savePost
+  );
+  app.patch(
+    "/api/posts/:id/unsave/:userId",
+    authenticate,
+    PostController.unsavePost
+  );
 };

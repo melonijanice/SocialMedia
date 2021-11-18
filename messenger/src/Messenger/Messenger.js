@@ -9,7 +9,7 @@ import axios from "axios";
 import { navigate } from "@reach/router";
 import io from "socket.io-client";
 import Navbar from "../Navigation/Navbar";
-
+import IconButton from "@mui/material/IconButton";
 import Button from "@mui/material/Button";
 
 export default function Messenger(props) {
@@ -226,15 +226,17 @@ console.log(localStorage.getItem("userData"));
                   {follower.firstName + " " + follower.lastName}
                 </Typography>
                 <Typography onClick={(e) => getUserMessages(e, follower._id)}>
-                  <p>
-                    {
-                      newmessageFrom.filter((item) => item === follower._id)
-                        .length
-                    }
-                  </p>
+               
                   {newmessageFrom.filter((item) => item === follower._id)
                     .length > 0
-                    ? "New Message Recieved"
+                    ?<><span>{newmessageFrom.filter((item) => item === follower._id)
+                    .length }</span> <img
+                    
+                    
+                    style={{ width: "30px" }}
+                    src="/new_message.png"
+                    alt="Image_logo"
+                  /></>
                     : ""}
                 </Typography>
               </Grid>
@@ -287,10 +289,14 @@ console.log(localStorage.getItem("userData"));
               
               onChange={(e) => setCurrentmsg(e.target.value)}
             />
-              <Button onClick={sendHandler} variant="contained" size="small" color="success">
-        send
-        </Button>
-        
+        <IconButton name="submit" aria-label="edit" size="large">
+            <img
+              onClick={sendHandler}
+              style={{ width: "40px" }}
+              src="/send.jpeg"
+              alt="Image_logo"
+            />
+          </IconButton>
           </Box>
         </Paper>
       </Box>

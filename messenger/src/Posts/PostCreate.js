@@ -105,8 +105,8 @@ const PostCreate = (e) => {
           <IconButton name="submit" aria-label="edit" size="large">
             <img
               onClick={submitHandler}
-              style={{ width: "40px" }}
-              src="/send.jpeg"
+              style={{ width: "66px", marginTop: "-18px", background: "white" }}
+              src="/post.jpeg"
               alt="Image_logo"
             />
           </IconButton>
@@ -127,7 +127,11 @@ const PostCreate = (e) => {
             aria-label="upload picture"
             component="span"
           >
-            <img style={{ width: "30px" }} src="/camera.png" alt="Image_logo" />
+            <img
+              style={{ width: "48px", marginTop: "-18px", marginLeft: "-18px" }}
+              src="/camera.png"
+              alt="Image_logo"
+            />
           </IconButton>
         </label>
         <span>{file.name}</span>
