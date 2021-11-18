@@ -10,7 +10,7 @@ const CommentCreate = (props) => {
   useEffect(() => {
     const LoggedInUser = JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
-  }, []);
+  }, [props.newPost]);
 
   const submitHandler = (e) => {
     e.preventDefault();

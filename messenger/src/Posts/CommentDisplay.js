@@ -19,7 +19,7 @@ const Comment = (props) => {
         console.log(res.data);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [props.newPost]);
   const showReplies = (e) => {
     setReply(e.target.id);
   };

@@ -17,6 +17,7 @@ import RepliesToComments from "./RepliesToComments";
 const PostDisplay = (props) => {
   const [posts, setPosts] = useState([]);
   const [newCommentLoaded, setNewCommentLoaded] = useState("");
+  const [newPostsLoaded, setnewPostsLoaded] = useState(false);
   const [elementMode, setElementMode] = useState("");
   const [deleteFlag, setdeleteFlag] = useState(false);
   const [user, setLoggedInUser] = useState("");
@@ -33,6 +34,8 @@ const PostDisplay = (props) => {
       .then((res) => {
         console.log(res.data);
         setPosts(res.data);
+        setnewPostsLoaded(!newPostsLoaded);
+
       })
       .catch((err) => console.log(err));
   }, [newCommentLoaded, deleteFlag, props.newPost, liked]);
@@ -208,11 +211,12 @@ const PostDisplay = (props) => {
               />
             )}
 
-            <CommentCreate
+            <CommentCreate newPost={newPostsLoaded}
               postId={element._id}
               onSubmitProp={setNewCommentHandler}
             ></CommentCreate>
             <CommentDisplay
+            newPost={newPostsLoaded}
               onCommentCreationProp={newCommentLoaded}
               postId={element._id}
             ></CommentDisplay>
