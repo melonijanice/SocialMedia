@@ -6,8 +6,6 @@ import {Link, navigate} from '@reach/router'
 import {UserContext} from '../context'
 // import Products from '../products/Products'
 import axios from 'axios'
-
-
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';

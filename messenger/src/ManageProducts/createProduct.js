@@ -12,7 +12,6 @@ import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 
 export default function CreateProduct() {
   const userId = localStorage.user && JSON.parse(localStorage.user).user_id;
-
   const [productId, setProductId] = useState("");
   const [title, setTitle] = useState("");
   const [price, setPrice] = useState();

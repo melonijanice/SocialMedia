@@ -21,7 +21,6 @@ export default function EditProduct(props) {
   const [errors, setErrors] = useState({}); */
   const [loaded, setLoaded] = useState(false);
   const [file, setFile] = useState("");
-
   const Input = styled("input")({
     display: "none",
   });

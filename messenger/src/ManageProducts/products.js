@@ -4,9 +4,6 @@ import Box from '@mui/material/Box';
 import Navbar from "../Navigation/Navbar";
 import Login from "../registration/Login";
 import Button from '@mui/material/Button';
-
-
-
 import axios from 'axios'
 import Product from './product'
 import {UserContext} from "../context"
