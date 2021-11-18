@@ -98,9 +98,18 @@ const PostCreate = (e) => {
               setPostBody(e.target.value);
             }}
           />
-          <Button variant="contained" color="primary" onClick={submitHandler}>
+          {/* <Button variant="contained" color="primary" onClick={submitHandler}>
             Post
-          </Button>
+          </Button> */}
+
+          <IconButton name="submit" aria-label="edit" size="large">
+            <img
+              onClick={submitHandler}
+              style={{ width: "40px" }}
+              src="/send.jpeg"
+              alt="Image_logo"
+            />
+          </IconButton>
 
           {errors && errors.postBody && (
             <p className="error-text">{errors.postBody.message}</p>
@@ -118,11 +127,7 @@ const PostCreate = (e) => {
             aria-label="upload picture"
             component="span"
           >
-                <img
-                      style={{width:"30px"}}
-                        src="/camera.png"
-                        alt="Image_logo"
-                      />
+            <img style={{ width: "30px" }} src="/camera.png" alt="Image_logo" />
           </IconButton>
         </label>
         <span>{file.name}</span>

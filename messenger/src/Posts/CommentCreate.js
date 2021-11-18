@@ -11,7 +11,7 @@ const CommentCreate = (props) => {
   useEffect(() => {
     const LoggedInUser = JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
-  }, []);
+  }, [props.newPost]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -40,14 +40,13 @@ const CommentCreate = (props) => {
     <div className="container">
       <form onSubmit={submitHandler}>
         <div>
-          <label className="form-label">Add Comment:</label>
-          <br></br>
           <Input
             placeholder="write a comment"
             sx={{
               border: "1px solid grey",
               borderRadius: "5px",
-              minWidth: "350px",
+              minWidth: "400px",
+              minHeight: "55px",
               background: "#D3D3D3",
             }}
             type="text"
@@ -56,26 +55,15 @@ const CommentCreate = (props) => {
               setCommentBody(e.target.value);
             }}
           />
-          <IconButton
-            name="Edit"
-            onClick={submitHandler}
-            aria-label="edit"
-            size="large"
-          >
+
+          <IconButton name="submit" aria-label="edit" size="large">
             <img
               onClick={submitHandler}
-              style={{ width: "30px" }}
-              src="/send.png"
+              style={{ width: "40px" }}
+              src="/send.jpeg"
               alt="Image_logo"
             />
           </IconButton>
-      {/*     <button
-            className="btn btn-primary"
-            style={{ marginLeft: "8px" }}
-            type="submit"
-          >
-            Add Comment
-          </button> */}
           {errors && errors.commentBody && (
             <p className="error-text">{errors.commentBody.message}</p>
           )}
