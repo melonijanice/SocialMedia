@@ -15,7 +15,7 @@ export default function StripePayment(props) {
             token, 
             product
           };
-      
+      console.log("product",product)
           const headers = {
             "content-type": "application/json"
           };
@@ -29,6 +29,7 @@ export default function StripePayment(props) {
             console.log("RESPONSE", response)
             const {status} = response;
             console.log("STATUS",status)
+            props.onSuccessProp(product._id)
           })
           .catch(error => console.log(error))
 
@@ -38,7 +39,7 @@ export default function StripePayment(props) {
         <div>
 
             <StripeCheckout
-                stripeKey={process.env.STRIPE_PK}
+                stripeKey={"pk_test_51JtljkCLhsRRew9GugnAGiCzDHFqbSV60HvOws5BNZgfRwnEEQF5w3rC7eWgs3KuIFtfDCN5VJjCDjcwNRBLgguQ00L0nQccah"}
                 token={makePayment}
                 name={`Buy ${product.title}`}
                 amount={product.price*100}
