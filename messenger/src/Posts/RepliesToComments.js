@@ -46,6 +46,7 @@ const RepliesToComments = (props) => {
         console.log(res);
         setSuccessfulDeleteBoolean(!successfulDeleteBoolen);
         props.onSubmitProp("");
+        setReplyBody("")
       })
       .catch((err) => {
         console.log(err.response.data.errors);

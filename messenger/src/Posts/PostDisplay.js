@@ -133,8 +133,20 @@ const PostDisplay = (props) => {
             display: "flex",
           }}
         >
-          <div class="card-body">
-            {user.user_id === element.postedBy._id && (
+          <div>
+          
+            <div style={{ display: elementMode === element._id ? "none" : "" }}>
+              <>
+                <span style={{ fontWeight: "bold" }}>
+                  {element.postedBy.firstName + " " + element.postedBy.lastName}
+                </span>{" "}
+                <span style={{ color: "grey" }}>
+                  posted on their canvas on
+                  {" " +
+                    moment(element.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
+                </span>
+              </>
+              <p class="card-text">{element.postBody}  {user.user_id === element.postedBy._id && (
               <div style={{ textAlign: "right" }}>
                 <IconButton
                   id={element._id}
@@ -167,19 +179,7 @@ const PostDisplay = (props) => {
                   />
                 </IconButton>
               </div>
-            )}
-            <div style={{ display: elementMode === element._id ? "none" : "" }}>
-              <p>
-                <span style={{ fontWeight: "bold" }}>
-                  {element.postedBy.firstName + " " + element.postedBy.lastName}
-                </span>{" "}
-                <span style={{ color: "grey" }}>
-                  posted on their canvas on
-                  {" " +
-                    moment(element.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
-                </span>
-              </p>
-              <p class="card-text">{element.postBody}</p>
+            )}</p>
 
               {element.Image.length !== 0 && (
                 <CardMedia

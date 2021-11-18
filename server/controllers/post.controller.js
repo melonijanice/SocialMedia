@@ -54,7 +54,7 @@ module.exports.getFollowerPosts = (request, response) => {
         .populate("postedBy")
         .populate("likedBy")
         .populate("sharedBy")
-        .sort({ updatedAt: "desc" })
+        .sort({ createdAt: "desc" })
         .then((messages) => response.json(messages))
         .catch((err) => response.json(err));
     })
