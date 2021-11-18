@@ -195,7 +195,7 @@ export default function Product(props) {
                 </IconButton>
 
                 <IconButton >
-                    <StripePayment product={product}> </StripePayment>
+                    <StripePayment product={product} onSuccessProp={deleteHandler}> </StripePayment>
                 </IconButton>
                 </Box>
             }
