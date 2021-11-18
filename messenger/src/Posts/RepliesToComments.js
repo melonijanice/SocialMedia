@@ -75,7 +75,6 @@ const RepliesToComments = (props) => {
                   setReplyBody(e.target.value);
                 }}
               />
-
               <IconButton name="submit" aria-label="edit" size="large">
                 <img
                   onClick={submitHandler}
@@ -107,10 +106,6 @@ const RepliesToComments = (props) => {
           )}
         </form>
       </div>
-      <div className="container">
-        <div class="dojo"></div>
-        <div className="a"></div>
-        <div className="row">
           <div
             className="flex"
             style={{
@@ -120,8 +115,7 @@ const RepliesToComments = (props) => {
               maxWidth: "200px",
             }}
           >
-            {" "}
-            <div class="card-body">
+            <div>
               {reply.map((element, index) => (
                 <>
                   <Grid sx={{ display: "flex", m: 2 }}>
@@ -156,8 +150,7 @@ const RepliesToComments = (props) => {
                 </p> */}
             </div>
           </div>
-        </div>
-      </div>
+        
     </>
   );
 };
