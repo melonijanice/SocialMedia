@@ -105,7 +105,7 @@ const PostCreate = (e) => {
           <IconButton name="submit" aria-label="edit" size="large">
             <img
               onClick={submitHandler}
-              style={{ width: "65px", marginTop: "-18px", background: "white" }}
+              style={{ width: "66px", marginTop: "-18px", background: "white" }}
               src="/post.jpeg"
               alt="Image_logo"
             />
