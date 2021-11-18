@@ -195,21 +195,19 @@ const PostDisplay = (props) => {
                   posted on their canvas on
                   {" " +
                     moment(element.createdAt).format("MMMM Do YYYY, h:mm:ss a")}
-                </span>
-              </>
-              <p class="card-text">{element.postBody}  {user.user_id === element.postedBy._id && (
-              <div style={{ textAlign: "right" }}>
+                </span> {user.user_id === element.postedBy._id && (
+              <span style={{ textAlign: "right" }}>
                 <IconButton
                   id={element._id}
                   name="Edit"
                   onClick={editHandler}
                   aria-label="edit"
-                  size="large"
+                  size="small"
                 >
                   <img
                     id={element._id}
                     onClick={editHandler}
-                    style={{ width: "30px" }}
+                    style={{ width: "20px" }}
                     src="/edit.png"
                     alt="Image_logo"
                   />
@@ -218,19 +216,21 @@ const PostDisplay = (props) => {
                   id={element._id}
                   name="Delete"
                   aria-label="delete"
-                  size="large"
+                  size="small"
                   onClick={deleteHandler}
                 >
                   <img
                     id={element._id}
                     onClick={deleteHandler}
-                    style={{ width: "30px" }}
+                    style={{ width: "20px" }}
                     src="/delete.jpeg"
                     alt="Image_logo"
                   />
                 </IconButton>
-              </div>
-            )}</p>
+              </span>
+            )}
+              </>
+              <p class="card-text">{element.postBody}</p>
 
               {element.Image.length !== 0 && (
                 <CardMedia
