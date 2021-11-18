@@ -266,7 +266,7 @@ const PostDisplay = (props) => {
                   <BookmarkIcon
                     id={element._id}
                     onClick={() => unsaveHandler(element._id)}
-                    sx={{ color: "red" }}
+                    sx={{ color: "teal" }}
                   />
                 ) : (
                   <BookmarkBorderIcon
