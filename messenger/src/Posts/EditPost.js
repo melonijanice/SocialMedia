@@ -5,17 +5,16 @@ import TextField from "@mui/material/TextField";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
-import PhotoCamera from '@mui/icons-material/PhotoCamera';
-import { styled } from '@mui/material/styles';
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
+import { styled } from "@mui/material/styles";
 
-const Input = styled('input')({
-    display: 'none',
-  });
+const Input = styled("input")({
+  display: "none",
+});
 
 const PostEdit = (props) => {
   const [postBody, setPostBody] = useState(props.postData);
-  const [post, setPost] = useState("")
-
+  const [post, setPost] = useState("");
 
   const [errors, setErrors] = useState({});
   const [user, setLoggedInUser] = useState({});
@@ -24,19 +23,19 @@ const PostEdit = (props) => {
     setLoggedInUser(LoggedInUser);
   }, []);
   useEffect(() => {
-    axios.get(`http://localhost:8000/api/posts/${props.id}`,{
+    axios
+      .get(`http://localhost:8000/api/posts/${props.id}`, {
         withCredentials: true,
       })
-    .then( res =>{
-        console.log("res data",res.data)
+      .then((res) => {
+        console.log("res data", res.data);
         //setPost(res.data)
-
-    })
-    .catch( error => console.log(error))
-}, [props.id])
+      })
+      .catch((error) => console.log(error));
+  }, [props.id]);
 
   const submitHandler = (e) => {
-    console.log("clicked")
+    console.log("clicked");
     e.preventDefault();
     const newPost = {
       postBody,
@@ -44,12 +43,12 @@ const PostEdit = (props) => {
     };
     console.log(newPost);
     axios
-      .put("http://localhost:8000/api/posts/"+props.id, newPost, {
+      .put("http://localhost:8000/api/posts/" + props.id, newPost, {
         withCredentials: true,
       })
       .then((res) => {
         console.log(res);
-        props.onSubmitProp(res.data)
+        props.onSubmitProp(res.data);
         //navigate("/displayPost");
       })
       .catch((err) => {
@@ -58,45 +57,41 @@ const PostEdit = (props) => {
       });
   };
   const cancelHandler = (e) => {
-    console.log("clicked")
+    console.log("clicked");
     e.preventDefault();
-    props.onSubmitProp("cancel")
-    
+    props.onSubmitProp("cancel");
   };
 
   return (
     <div className="container">
       <Box
-          sx={{
-            bgcolor: "background.paper",
-          }}
-        >
-    <>
+        sx={{
+          bgcolor: "background.paper",
+        }}
+      >
+        <>
           <TextField
-          sx={{ minWidth:{xs: "100px", md: "500px" }}}
-          id="title"
-          label="Editing post"
-          variant="outlined"
-          defaultValue={postBody}
-          value={postBody}
-          onChange={(e) => {
-            setPostBody(e.target.value);
-          }}
-        />
-         <Button variant="contained" color="primary" onClick={submitHandler}>
-                      Update
-                    </Button>
-                    <Button variant="contained" color="primary" onClick={cancelHandler}>
-                      Cancel
-                    </Button>
-                    {errors && errors.postBody && (
+            sx={{ minWidth: { xs: "100px", md: "500px" } }}
+            id="title"
+            label="Editing post"
+            variant="outlined"
+            defaultValue={postBody}
+            value={postBody}
+            onChange={(e) => {
+              setPostBody(e.target.value);
+            }}
+          />
+          <Button color="primary" onClick={submitHandler}>
+            Update
+          </Button>
+          <Button color="primary" onClick={cancelHandler}>
+            Cancel
+          </Button>
+          {errors && errors.postBody && (
             <p className="error-text">{errors.postBody.message}</p>
           )}
-                    </>
-       
-        </Box>
-       
-       
+        </>
+      </Box>
     </div>
   );
 };

@@ -183,6 +183,7 @@ function Navbar() {
                       {User.firstName.charAt(0) +
                         User.lastName.charAt(0)}
                     </Avatar>}  */}
+                    {User && User.name}
                   
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">

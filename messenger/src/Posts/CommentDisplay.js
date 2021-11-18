@@ -71,6 +71,8 @@ const Comment = (props) => {
                 <Link
                   component="button"
                   variant="body2"
+                  underline="none"
+                  sx={{ fontWeight: "bold", cursor: "pointer" }}
                   id={element._id}
                   onClick={showReplies}
                 >
