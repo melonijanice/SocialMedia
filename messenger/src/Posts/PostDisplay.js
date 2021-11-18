@@ -9,6 +9,9 @@ import CardMedia from "@mui/material/CardMedia";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import moment from "moment";
 
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+
 import { Link, navigate } from "@reach/router";
 // import ReactImageMagnify from "react-image-magnify";
 import CommentCreate from "./CommentCreate";
@@ -23,7 +26,11 @@ const PostDisplay = (props) => {
   const [elementMode, setElementMode] = useState("");
   const [deleteFlag, setdeleteFlag] = useState(false);
   const [user, setLoggedInUser] = useState("");
+  const [userInfo, setUserInfo] = useState({})
+
   const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false)
+
   useEffect(() => {
     const LoggedInUser = JSON.parse(localStorage.user);
     setLoggedInUser(LoggedInUser);
@@ -39,7 +46,23 @@ const PostDisplay = (props) => {
         setnewPostsLoaded(!newPostsLoaded);
       })
       .catch((err) => console.log(err));
-  }, [deleteFlag, props.newPost, liked]);
+
+      axios
+      .get(`http://localhost:8000/api/users/${LoggedInUser.user_id}`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log("Result: ", res.data);
+        
+        // localStorage.userRecord = JSON.stringify(res.data);
+        // const userRecord = localStorage.userRecord;
+        setUserInfo(res.data);
+        // setPosts(res.data);
+        // setnewPostsLoaded(!newPostsLoaded);
+      })
+      .catch((err) => console.log(err));
+
+  }, [deleteFlag, props.newPost, liked, saved]);
 
   const setNewCommentHandler = (newComment) => {
     setNewCommentLoaded(newComment);
@@ -75,6 +98,34 @@ const PostDisplay = (props) => {
       )
       .then((res) => {
         setLiked(!liked);
+      })
+      .catch((err) => console.log(err.response));
+  };
+
+  const saveHandler = (postId) => {
+    axios
+      .patch(
+        `http://localhost:8000/api/posts/${postId}/save/${user.user_id}`,
+        {},
+        { withCredentials: true }
+      )
+      .then((res) => {
+        console.log(`Post ${postId} saved.`);
+        setSaved(!saved);
+      })
+      .catch((err) => console.log(err.response));
+  };
+
+  const unsaveHandler = (postId) => {
+    axios
+      .patch(
+        `http://localhost:8000/api/posts/${postId}/unsave/${user.user_id}`,
+        {},
+        { withCredentials: true }
+      )
+      .then((res) => {
+        console.log(`Post ${postId} unsaved.`);
+        setSaved(!saved);
       })
       .catch((err) => console.log(err.response));
   };
@@ -204,6 +255,23 @@ const PostDisplay = (props) => {
                   <FavoriteIcon
                     id={element._id}
                     onClick={() => likeHandler(element._id)}
+                  />
+                )}
+              </IconButton>
+
+              <IconButton id={element._id}>
+                { console.log("User Info: ", userInfo)}
+                {userInfo.saved.filter((savedPost) => savedPost === element._id)
+                  .length > 0 ? (
+                  <BookmarkIcon
+                    id={element._id}
+                    onClick={() => unsaveHandler(element._id)}
+                    sx={{ color: "red" }}
+                  />
+                ) : (
+                  <BookmarkBorderIcon
+                    id={element._id}
+                    onClick={() => saveHandler(element._id)}
                   />
                 )}
               </IconButton>

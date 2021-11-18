@@ -125,3 +125,63 @@ module.exports.unlikePost = async (request, response) => {
     if (err) return response.status(500).json({ err });
   }
 };
+
+// Get Saved Posts
+module.exports.getSavedPosts = async (request, response) => {
+  console.log("Request : ", request.user)
+  try {
+    const posts = PostManager.find({ _id: { $in : user.saved  }});
+
+    const saved = await posts.sort("-createdAt");
+
+    response.json({
+      saved,
+      result: saved.length,
+    });
+  } catch (err) {
+    return response.status(500).json({ err });
+  }
+};
+
+// Save Post
+module.exports.savePost = async (request, response) => {
+  try {
+    const user = await UserManager.find({
+      _id: request.params.userId,
+      saved: request.params.id,
+    });
+    if (user.length > 0)
+      return response.status(400).json("You already saved this post.");
+
+    const save = await UserManager.findOneAndUpdate(
+      { _id: request.params.userId },
+      {
+        $push: { saved: request.params.id },
+      },
+      { new: true }
+    );
+    if (!save) return response.status(400).json("This user does not exist.");
+
+    response.json("Post saved.");
+  } catch (err) {
+    return response.status(500).json({ err });
+  }
+};
+
+// Unsave Post
+module.exports.unsavePost = async (request, response) => {
+  try {
+    const save = await UserManager.findOneAndUpdate(
+      { _id: request.params.userId },
+      {
+        $pull: { saved: request.params.id },
+      },
+      { new: true }
+    );
+    if (!save) return response.status(400).json("This user does not exist.");
+
+    response.json("Post unsaved.");
+  } catch (err) {
+    return response.status(500).json({ err });
+  }
+};

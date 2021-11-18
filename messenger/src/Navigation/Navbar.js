@@ -179,10 +179,10 @@ function Navbar() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  {User && <Avatar sx={{ bgcolor: "blue" }}>
+                  {/* {User && <Avatar sx={{ bgcolor: "blue" }}>
                       {User.firstName.charAt(0) +
                         User.lastName.charAt(0)}
-                    </Avatar>} 
+                    </Avatar>}  */}
                   
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
