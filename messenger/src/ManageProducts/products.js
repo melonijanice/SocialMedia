@@ -8,8 +8,6 @@ import axios from 'axios'
 import Product from './product'
 import {UserContext} from "../context"
 import { navigate } from '@reach/router';
-
-
 export default function ProductsComponent() {
     const [products, setProducts] = useState([])
     const [productsRenderFlag, setProductsRenderFlag] = useState(false)

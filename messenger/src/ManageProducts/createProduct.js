@@ -21,7 +21,6 @@ export default function CreateProduct() {
   const [errors, setErrors] = useState({}); */
   const [productsRenderFlag, setProductsRenderFlag] = useState(false);
   const [file, setFile] = useState("");
-
   const Input = styled("input")({
     display: "none",
   });

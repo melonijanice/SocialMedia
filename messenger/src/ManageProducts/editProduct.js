@@ -180,7 +180,6 @@ export default function EditProduct(props) {
             disabled
           onChange={(e) => {
             setImages(file.name);}}
-          
           />
            <label htmlFor="icon-button-file">
             <Input
