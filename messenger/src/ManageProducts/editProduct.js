@@ -17,8 +17,8 @@ export default function EditProduct(props) {
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
-  const [owner_id, setOwner_id] = useState("");
-  const [errors, setErrors] = useState({});
+/*   const [owner_id, setOwner_id] = useState("");
+  const [errors, setErrors] = useState({}); */
   const [loaded, setLoaded] = useState(false);
   const [file, setFile] = useState("");
 

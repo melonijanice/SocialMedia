@@ -18,8 +18,8 @@ export default function CreateProduct() {
   const [price, setPrice] = useState();
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
-  const [owner, setOwner] = useState("");
-  const [errors, setErrors] = useState({});
+/*   const [owner, setOwner] = useState("");
+  const [errors, setErrors] = useState({}); */
   const [productsRenderFlag, setProductsRenderFlag] = useState(false);
   const [file, setFile] = useState("");
 

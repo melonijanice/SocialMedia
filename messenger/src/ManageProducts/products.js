@@ -38,10 +38,6 @@ export default function ProductsComponent() {
 
     },[productsRenderFlag])
 
-
-
-
-
     // const {setFilteredProducts ,products} = useContext(UserContext)
     // const [displayProducts, setDisplayProducts]= useState([])
 

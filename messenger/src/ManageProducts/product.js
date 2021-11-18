@@ -34,13 +34,6 @@ import moment from 'moment'
 import StripePayment from './payment'
 
 
-
-
-
-
-
-
-
 export default function Product(props) {
 
 
