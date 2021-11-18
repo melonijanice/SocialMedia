@@ -6,8 +6,6 @@ import {Link, navigate} from '@reach/router'
 import {UserContext} from '../context'
 // import Products from '../products/Products'
 import axios from 'axios'
-
-
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -27,18 +25,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-
 import ChatIcon from '@mui/icons-material/Chat';
 import PaymentIcon from '@mui/icons-material/Payment';
 import moment from 'moment'
 import StripePayment from './payment'
-
-
-
-
-
-
-
 
 
 export default function Product(props) {

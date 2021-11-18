@@ -3,7 +3,6 @@ import axios from "axios";
 import { Link, navigate } from "@reach/router";
 import Input from "@mui/material/Input";
 import IconButton from "@mui/material/IconButton";
-
 const CommentCreate = (props) => {
   const [commentBody, setCommentBody] = useState("");
   const [errors, setErrors] = useState({});
