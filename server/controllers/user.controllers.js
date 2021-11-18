@@ -1,51 +1,44 @@
-
 const UserManager = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
 
 require("dotenv").config();
 
 module.exports = {
   createUser: (req, res) => {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      confirmPassword
-    } = req.body;
-    
-    
+    const { firstName, lastName, email, password, confirmPassword } = req.body;
+
     UserManager.findOne({ email: email })
       .then((user) => {
-        if(user){
-          
-          res.status(400).send({errors:{
-            unique: {
-              unique: "ValidatorError",
-              message: "User Email Already Exists",
-              properties: {
-                message: "User Email Already Exists"
+        if (user) {
+          res.status(400).send({
+            errors: {
+              unique: {
+                unique: "ValidatorError",
+                message: "User Email Already Exists",
+                properties: {
+                  message: "User Email Already Exists",
+                },
+                kind: "unique",
+                path: "unique",
               },
-              kind: "unique",
-              path: "unique"
             },
-          }});
-        }
-        else{
+          });
+        } else {
           UserManager.create({
             firstName,
             lastName,
             email,
             password,
-            confirmPassword
+            confirmPassword,
           })
             .then((user) => {
               const userToken = jwt.sign(
                 {
                   user_id: user._id,
-                  email: user.email
+                  email: user.email,
+                  firstName: userRecord.firstName,
+                  lastName: userRecord.lastName,
                 },
                 process.env.JWT_SECRET
               );
@@ -59,39 +52,36 @@ module.exports = {
                   userLoggedIn: {
                     name: user.firstName + " " + user.lastName,
                     user_id: user._id,
-                    email: user.email
+                    email: user.email,
                   },
                 });
             })
             .catch((err) => {
               res.status(400).json(err);
             });
-          }
+        }
       })
-      .catch((err) => res.status(400).json(err))
+      .catch((err) => res.status(400).json(err));
   },
   login: (req, res) => {
-  
     UserManager.findOne({ email: req.body.email }).then((userRecord) => {
       if (userRecord === null) {
         // email not found in users collection
         return res.sendStatus(400);
         //res.Status(400).json({ message: "Invalid Login Attempt" });
-      }
-      else {
-     
-
+      } else {
         bcrypt
           .compare(req.body.password, userRecord.password)
           .then((isPasswordValid) => {
             if (isPasswordValid) {
-               
               // password wasn't a match!
               const userToken = jwt.sign(
                 {
                   user_id: userRecord._id,
                   email: userRecord.email,
-                  following:userRecord.following
+                  following: userRecord.following,
+                  firstName: userRecord.firstName,
+                  lastName: userRecord.lastName,
                 },
                 process.env.JWT_SECRET
               );
@@ -106,7 +96,7 @@ module.exports = {
                   userLoggedIn: {
                     name: userRecord.firstName + " " + userRecord.lastName,
                     user_id: userRecord._id,
-                    email: userRecord.email
+                    email: userRecord.email,
                   },
                 });
             } else {
@@ -124,35 +114,31 @@ module.exports = {
   },
   getAll: (req, res) => {
     UserManager.find({})
-    .populate("followers following", "-password")
+      .populate("followers following", "-password")
       .then((user) => res.json(user))
       .catch((err) => res.json(err));
   },
   getOne: (req, res) => {
     UserManager.findOne({ _id: req.params.id })
-    .populate('following')
+      .populate("following")
       .then((user) => res.json(user))
       .catch((err) => res.json(err));
   },
   update: (req, res) => {
-    const {
-      firstName,
-      lastName,
-      email
-    } = req.body;
+    const { firstName, lastName, email } = req.body;
     UserManager.findByIdAndUpdate(
       req.params.id,
       {
         firstName,
         lastName,
-        email
+        email,
       },
       { new: true, runValidators: true } //return updated objects and run the validators that were used for update
     )
       .then((updatedUser) => res.json(updatedUser))
       .catch((err) => {
         res.status(400).json(err);
-   
+
         res.json(err);
       });
   },
@@ -177,7 +163,6 @@ module.exports = {
   },
   follow: async (req, res) => {
     try {
-
       const user = await UserManager.find({
         _id: req.params.toFollow_id,
         followers: req.params.user_id,
@@ -194,7 +179,7 @@ module.exports = {
         },
         { new: true }
       ).populate("followers following", "-password");
-        
+
       await UserManager.findOneAndUpdate(
         { _id: req.params.user_id },
         {
@@ -203,17 +188,18 @@ module.exports = {
         { new: true }
       );
 
-      return res.json({ 
-        newUser });
+      return res.json({
+        newUser,
+      });
     } catch (err) {
       return res.status(500).json({ message: err.message });
     }
   },
- 
+
   unfollow: async (req, res) => {
     try {
       const newUser = await UserManager.findOneAndUpdate(
-        { _id: req.params.toFollow_id},
+        { _id: req.params.toFollow_id },
         {
           $pull: { followers: req.params.user_id },
         },
@@ -236,14 +222,14 @@ module.exports = {
   suggestions: async (req, res) => {
     try {
       const user = await UserManager.find({
-        _id: req.params.id
+        _id: req.params.id,
       });
       //const str = JSON.stringify(user[0].following).replace('[',"").replace(']',"").replace(/\"/g, "");
       //const user_following = str.split(',');
-      
+
       const newArr = [...user[0].following, user[0]._id];
       const num = req.query.num || 10;
-     
+
       const users = await UserManager.aggregate([
         { $match: { _id: { $nin: newArr } } },
         { $sample: { size: Number(num) } },
@@ -264,7 +250,7 @@ module.exports = {
           },
         },
       ]).project("-password");
-     
+
       return res.json({
         users,
         result: users.length,
@@ -273,6 +259,4 @@ module.exports = {
       return res.status(500).json({ message: err.message });
     }
   },
- 
-  
 };
